@@ -1,0 +1,208 @@
+/* 
+ * BAS-IP Control Panel Styles
+ * 
+ * This CSS file provides styling for the BAS-IP control panel interface.
+ * Includes general styles, component-specific styles, and responsive design.
+ * 
+ * Last updated: 2025-03-28
+ * Version: 1.0.0
+ */
+
+/* CSS Variables for Theming */
+:root {
+    --primary-color: #007BFF;
+    --primary-hover: #0056b3;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --modal-background: #1a1d28;
+    --modal-text-color: white;
+    --loading-color: rgba(255,255,255,0.8);
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+header {
+    background-color: var(--text-color);
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.status {
+    margin-bottom: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.controls button:hover {
+    background-color: var(--primary-hover);
+}
+
+.camera video {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: var(--text-color);
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+/* Custom Styles */
+#status {
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    background: #2a2f4a;
+    border: 1px solid #3d445f;
+    transition: all 0.3s ease;
+    font-family: monospace;
+    color: white;
+}
+
+.confirmation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 2vmin;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: var(--modal-background);
+    border-radius: 12px;
+    width: 95vw;
+    height: 70vh;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4vmin;
+    box-sizing: border-box;
+    color: var(--modal-text-color);
+}
+
+.modal-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4vmin;
+    height: 70%;
+    min-height: 300px;
+}
+
+.modal-buttons button {
+    width: 100%;
+    height: 100%;
+    font-size: clamp(24px, 6vw, 48px);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    word-break: break-word;
+    padding: 2vmin;
+    box-sizing: border-box;
+    line-height: 1.2;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-buttons button:hover {
+    background-color: var(--primary-hover);
+}
+
+#modalMessage {
+    font-size: clamp(20px, 4vw, 32px);
+    text-align: center;
+    margin: 2vmin 0;
+    overflow: auto;
+    max-height: 20vh;
+}
+
+/* Camera Feed and Loading Indicator */
+#camera-feed {
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.loading-indicator {
+    position: relative;
+}
+
+.loading-indicator.loading::after {
+    content: "\f1ce";
+    font-family: "Font Awesome 5 Free";
+    animation: fa-spin 2s infinite linear;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    color: var(--loading-color);
+}
+
+.lazy-load {
+    transition: opacity 0.3s ease;
+    min-height: 480px;
+    background: #2a2f4a;
+}
+
+/* Responsive Design */
+@media (orientation: portrait) {
+    .modal-content {
+        height: 95vw;
+        width: 70vh;
+    }
+    .modal-buttons {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}
