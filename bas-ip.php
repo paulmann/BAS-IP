@@ -27,9 +27,7 @@ if (!in_array($_SERVER['REMOTE_ADDR'], $config['allowedIps'], true)) {
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="css/main.css" />
- 	<link rel="stylesheet" href="/css/styles.css" />
 	<link rel="icon" href="/favicon.svg" type="image/svg">
-	<noscript><link rel="stylesheet" href="css/noscript.css" /></noscript>
 </head>
 <body class="is-preload">
 	<div id="confirmationModal" class="confirmation-modal">
