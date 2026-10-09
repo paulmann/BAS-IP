@@ -7,7 +7,7 @@
  *
  *  1. Copy this file:      cp .bas-ip.config.local.php.example .bas-ip.config.local.php
  *  2. Fill in the values below.
- *  3. chmod 640 .bas-ip.config.local.php   (owner: web-server user)
+ *  3. chmod 600 .bas-ip.config.local.php   (owner: web-server user)
  *
  *  ✅ `.bas-ip.config.local.php` is in .gitignore — your secrets never leave
  *     the server and are never lost when you `git pull` a new release.
@@ -16,7 +16,7 @@
  *  ✅ Values may use environment placeholders:  'password' => '${ENV:DB_PASSWORD}'
  *     and the `${secret:NAME}` marker to store the value encrypted at rest.
  *
- *  Full reference: docs/CONFIGURATION.md · wiki/03-Configuration.md
+ *  Full reference: wiki/03-Configuration.md (или в приложении: /help → «Конфигурация»)
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
