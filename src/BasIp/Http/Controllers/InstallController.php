@@ -129,6 +129,9 @@ final class InstallController extends Controller
             // ── 3. Verify the connection & migrate ────────────────────────
             /** @var Database $database */
             $database = $this->svc(Database::class);
+            // The container built Database during middleware with the pre-install
+            // config — pick up the credentials we have just written.
+            $database->reload();
             if (!$database->ping()) {
                 throw new \RuntimeException('Не удалось подключиться к базе данных. Проверьте параметры.');
             }
@@ -308,22 +311,28 @@ final class InstallController extends Controller
         }
 
         $port = $db['port'] ?? ($db['driver'] === 'pgsql' ? 5432 : 3306);
-        $connection = var_export([
-            'driver'   => $db['driver'],
-            'host'     => $db['host'],
-            'port'     => (int) $port,
-            'database' => $db['driver'] === 'sqlite' ? $this->absolutePath((string) $db['database']) : $db['database'],
-            'username' => $db['driver'] === 'sqlite' ? null : $db['username'],
-            'password' => $db['driver'] === 'sqlite' ? null : $db['password'],
-        ] + ($db['socket'] !== '' ? ['unix_socket' => $db['socket']] : []), true);
+        // SQLite needs exactly two keys; mysql/pgsql get the full set.
+        $connectionData = $db['driver'] === 'sqlite'
+            ? ['driver' => 'sqlite', 'database' => $this->absolutePath((string) $db['database'])]
+            : array_filter([
+                'driver'      => $db['driver'],
+                'host'        => $db['host'],
+                'port'        => (int) $port,
+                'database'    => $db['database'],
+                'username'    => $db['username'],
+                'password'    => $db['password'],
+                'charset'     => $db['driver'] === 'mysql' ? 'utf8mb4' : null,
+                'unix_socket' => $db['socket'] !== '' ? $db['socket'] : null,
+            ], static fn ($v) => $v !== null && $v !== '');
+        $connection = $this->renderArray($connectionData, 12);
 
-        $deviceBlock = var_export(array_filter([
+        $deviceBlock = $this->renderArray(array_filter([
             'driver'     => $device['driver'],
             'base_url'   => $device['base_url'] ?: null,
             'login'      => $device['login'] ?: null,
             'password'   => $device['password'] !== '' ? '${secret:DEVICE_PASSWORD}' : null,
             'verify_tls' => false,
-        ], static fn ($v) => $v !== null), true);
+        ], static fn ($v) => $v !== null), 4);
 
         $contents = <<<PHP
 <?php
@@ -334,7 +343,7 @@ final class InstallController extends Controller
  * Файл создан установщиком {$this->now()}. Он в .gitignore:
  * секреты не попадут в репозиторий и не потеряются при обновлении.
  *
- * Справка: docs/CONFIGURATION.md · wiki/03-Configuration.md
+ * Справка: раздел «Конфигурация» встроенной справки (/help) и wiki/03-Configuration.md
  */
 
 declare(strict_types=1);
@@ -448,5 +457,36 @@ PHP;
     private function b(mixed $value): string
     {
         return $value ? 'true' : 'false';
+    }
+
+    /**
+     * Render a flat scalar array as readable short-syntax PHP, indented by
+     * `$indent` spaces. Keeps the generated local config hand-editable —
+     * var_export() dumps `array (…)`, which nobody wants to maintain.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function renderArray(array $data, int $indent = 0): string
+    {
+        if ($data === []) {
+            return '[]';
+        }
+
+        $pad  = str_repeat(' ', $indent);
+        $width = max(array_map('strlen', array_keys($data)));
+        $lines = [];
+        foreach ($data as $key => $value) {
+            $rendered = match (true) {
+                is_bool($value)   => $value ? 'true' : 'false',
+                is_int($value)    => (string) $value,
+                is_float($value)  => var_export($value, true),
+                $value === null   => 'null',
+                is_array($value)  => $this->renderArray($value, $indent + 4),
+                default           => $this->q($value),
+            };
+            $lines[] = $pad . '    ' . str_pad("'" . $key . "'", $width + 2) . ' => ' . $rendered . ',';
+        }
+
+        return "[\n" . implode("\n", $lines) . "\n" . $pad . ']';
     }
 }

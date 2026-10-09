@@ -59,6 +59,24 @@ final class Database
         return $this->pdo ??= $this->connect();
     }
 
+    /**
+     * Re-read the connection parameters from the config and drop any
+     * established PDO connection.
+     *
+     * The web installer overrides `db.*` *after* the container has already
+     * built this object (middleware resolves the guard first), and long-running
+     * workers may need to reconnect after a config change — this is the safe
+     * way to pick up the new settings without rebuilding every service that
+     * holds a reference.
+     */
+    public function reload(?string $connection = null): void
+    {
+        $this->pdo        = null;
+        $this->connection = $connection ?? $this->config->string('db.default', 'mysql');
+        $this->driver     = strtolower((string) $this->config->string('db.connections.' . $this->connection . '.driver', $this->connection));
+        $this->prefix     = (string) $this->config->string('db.prefix', '');
+    }
+
     public function driver(): string
     {
         return $this->driver;

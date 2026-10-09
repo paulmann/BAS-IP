@@ -522,7 +522,7 @@ return [
         ],
         'strategy'         => 'inplace',   // inplace | releases (symlink)
         'allow_rollback'   => true,
-        'php_min'          => '8.3.0',
+        'php_min'          => '8.2.0',
     ],
 
     /*

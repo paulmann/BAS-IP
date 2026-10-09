@@ -39,7 +39,7 @@ return [
 
 | Компонент | Минимум | Рекомендуется |
 |---|---|---|
-| PHP | 8.3 | **8.5** |
+| PHP | 8.2 | **8.5** |
 | Расширения PHP | curl, pdo, mbstring, json, openssl | + sodium, zip, intl, pdo_mysql или pdo_pgsql |
 | СУБД | MySQL 8.0 / MariaDB 10.6 | MySQL 8.4 LTS |
 | Также поддерживается | PostgreSQL 13+, SQLite 3.35+ | — |
@@ -3292,7 +3292,7 @@ php bin/bas-ip queue:run            # разобрать сейчас
 1. Включите отладку во временном локальном конфиге: `'app' => ['debug' => true]`.
 2. Посмотрите `storage/logs/error.log` — там полный стектрейс.
 3. Проверьте права: `chmod -R 770 storage && chown -R www-data:www-data storage`.
-4. Проверьте версию PHP: `php -v` (нужно 8.3+, рекомендуется 8.5).
+4. Проверьте версию PHP: `php -v` (нужно 8.2+, рекомендуется 8.5).
 5. Если недавно обновлялись: `php bin/bas-ip update:rollback`.
 
 ## «База данных недоступна»

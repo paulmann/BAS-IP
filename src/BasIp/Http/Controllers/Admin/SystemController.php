@@ -459,7 +459,7 @@ final class SystemController extends Controller
             'last_check'     => $this->settingsService()->get('update.last_check'),
             'release'  => $release?->toArray(),
             'has_token' => $this->config()->string('update.token', '') !== '',
-            'php_min'  => $this->config()->string('update.php_min', '8.3.0'),
+            'php_min'  => $this->config()->string('update.php_min', '8.2.0'),
         ];
     }
 

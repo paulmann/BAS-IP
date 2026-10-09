@@ -31,7 +31,7 @@ $publicSettings = $this->shared['publicSettings'] ?? [];
 <meta name="theme-color" content="<?= $initialDark ? '#09090b' : '#ffffff' ?>">
 <meta name="robots" content="noindex, nofollow">
 <meta name="csrf-token" content="<?= $this->e($this->csrfToken()) ?>">
-<title><?= $this->e(($title ?? '') . ' · ' . $appName) ?></title>
+<title><?= $this->e(($title ?? '') !== '' ? $title . ' · ' . $appName : $appName) ?></title>
 <link rel="icon" href="<?= $this->e($this->asset('favicon.svg')) ?>" type="image/svg+xml">
 <link rel="stylesheet" href="<?= $this->e($this->asset('css/app.css')) ?>">
 <script nonce="<?= $this->e($nonce) ?>">
