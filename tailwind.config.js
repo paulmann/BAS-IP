@@ -124,7 +124,7 @@ module.exports = {
       },
       zIndex: {
         '60': '60', '70': '70', '80': '80', '90': '90', '100': '100',
-        'toast': '90', 'modal': '80', 'sheet': '75', 'dropdown': '60', 'sticky': '40',
+        'toast': '90', 'tooltip': '85', 'modal': '80', 'sheet': '75', 'dropdown': '60', 'sticky': '40',
       },
       transitionTimingFunction: {
         'spring': 'cubic-bezier(.16,1,.3,1)',

@@ -258,7 +258,7 @@ $err = static fn (string $key): ?string => isset($errors[$key]) ? (string) $erro
   <aside class="grid content-start gap-5">
 
     <section class="card">
-      <div class="card-header"><div class="card-title flex items-center gap-2"><?= $this->icon('toggles', 'h-4 w-4') ?> Статусы</div></div>
+      <div class="card-header"><div class="card-title flex items-center gap-2"><?= $this->icon('sliders-horizontal', 'h-4 w-4') ?> Статусы</div></div>
       <div class="card-content grid gap-3">
         <?php
           $flags = [
