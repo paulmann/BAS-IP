@@ -322,4 +322,35 @@ final class HttpTest extends TestCase
         $this->assertSame(404, $data['status']);
         $this->assertTrue(isset($data['request_id']));
     }
+
+    /* ─────────────────────────── maintenance ─────────────────────────── */
+
+    public function testMaintenanceModeKeepsTheGateReachable(): void
+    {
+        TestApp::config()->override(['app' => ['maintenance' => true]]);
+        try {
+            // Opening the gate bypasses the maintenance page (auth still applies).
+            $panel = TestApp::request('POST', '/panel/open', ['_token' => TestApp::csrf()], ['Accept' => 'application/json'], $this->admin);
+            $this->assertContains($panel->statusCode(), [200, 422, 429], 'gate open must not be blocked by maintenance');
+
+            // Guest links keep working — a courier must not see a 503.
+            $guest = TestApp::request('GET', '/guest', [], ['Accept' => 'text/html']);
+            $this->assertNotSame(503, $guest->statusCode());
+
+            // Health probes keep working for monitoring.
+            $this->assertSame(200, TestApp::request('GET', '/health.json')->statusCode());
+
+            // A resident's ordinary page IS closed by maintenance.
+            $residentId = TestApp::makeResident(['apartment' => '77']);
+            $resident = TestApp::makeUser('http-maintenance-resident', 'Str0ngPass!', 'resident', $residentId);
+            $cabinet = TestApp::request('GET', '/cabinet', [], ['Accept' => 'text/html'], $resident);
+            $this->assertSame(503, $cabinet->statusCode());
+
+            // Anonymous home page is closed too.
+            $home = TestApp::request('GET', '/', [], ['Accept' => 'text/html']);
+            $this->assertSame(503, $home->statusCode());
+        } finally {
+            TestApp::config()->override(['app' => ['maintenance' => false]]);
+        }
+    }
 }

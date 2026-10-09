@@ -18,7 +18,21 @@ use Closure;
  */
 final class MaintenanceMode extends AbstractMiddleware
 {
-    private const ALWAYS_ALLOWED = ['/login', '/health', '/admin/system', '/api/gate/open', '/assets'];
+    /**
+     * Paths that bypass the maintenance block. NOTE: this only skips the
+     * 503 — the rest of the pipeline (Authenticate/Authorize/CSRF/rate-limit)
+     * still runs, so /admin and /panel stay protected as usual. Nobody may
+     * be locked out of their own yard: every gate-open route is here.
+     */
+    private const ALWAYS_ALLOWED = [
+        '/login', '/logout', '/health', '/metrics', '/assets',
+        '/panel',                    // панель оператора: открыть/закрыть/статус
+        '/guest',                    // гостевые ссылки и открытие по коду
+        '/api/v1/gate',              // управление устройством по API
+        '/bas_ip.php',               // legacy v1: lock_open/status/…
+        '/webhook/telegram',         // команды бота (в т.ч. /open)
+        '/admin',                    // админка доступна (права проверит Authorize)
+    ];
 
     public function handle(Request $request, Closure $next): Response
     {
@@ -32,9 +46,13 @@ final class MaintenanceMode extends AbstractMiddleware
             }
         }
 
-        $guard = $this->container->has('auth.guard') ? $this->container->get('auth.guard') : null;
-        if ($guard !== null && method_exists($guard, 'isAdmin') && $guard->isAdmin()) {
-            return $next($request);
+        // The kernel starts the session before the pipeline, so the guard can
+        // still resolve an admin on non-whitelisted paths (e.g. /cabinet).
+        if ($this->container->hasInstance(\BasIp\Auth\Guard::class)) {
+            $guard = $this->container->get(\BasIp\Auth\Guard::class);
+            if ($guard->isAdmin()) {
+                return $next($request);
+            }
         }
 
         if ($request->expectsJson()) {
