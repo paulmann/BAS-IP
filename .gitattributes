@@ -1,0 +1,30 @@
+* text=auto eol=lf
+
+# Binary assets — never touch line endings
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.svg    text eol=lf
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.zip    binary
+*.sqlite binary
+
+# Not needed in production exports (`git archive`).
+# Note: gitattributes has no negation, so README.md is deliberately
+# NOT export-ignored — it must stay inside release archives.
+/.github     export-ignore
+/docs        export-ignore
+/tests       export-ignore
+/tools       export-ignore
+/wiki        export-ignore
+/deploy      export-ignore
+/PLAN.md     export-ignore
+CHANGELOG.md export-ignore
+CONTRIBUTING.md export-ignore
+SECURITY.md    export-ignore
+.gitattributes export-ignore
+.gitignore     export-ignore

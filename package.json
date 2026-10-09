@@ -1,0 +1,31 @@
+{
+  "name": "bas-ip-gate-manager-assets",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Front-end build for BAS-IP Gate Manager (Tailwind CSS + shadcn/ui design tokens, fully local — no CDN).",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js && npm run build:icons",
+    "build:css": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --minify",
+    "build:css:dev": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css",
+    "watch": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --watch",
+    "build:js": "node tools/build-js.mjs",
+    "build:icons": "node tools/build-icons.mjs",
+    "vendor:fonts": "node tools/vendor-fonts.mjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17",
+    "lucide-static": "^1.54.0",
+    "@fontsource/inter": "^5.0.0",
+    "@fontsource/jetbrains-mono": "^5.0.0",
+    "qrcode-generator": "^1.4.4"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions",
+    "iOS >= 15",
+    "Android >= 100"
+  ]
+}

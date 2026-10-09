@@ -1,0 +1,76 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  BAS-IP Gate Manager — Apache configuration for the public/ document root
+# ─────────────────────────────────────────────────────────────────────────────
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Honour the X-Forwarded-Proto header only from trusted proxies
+    # (set app.behind_proxy = true in the local config when behind nginx/LB).
+    RewriteCond %{HTTP:Authorization} .+
+    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect trailing slashes (except real directories).
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Serve existing files/directories directly, everything else → index.php.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Never expose dotfiles, backups or editor droppings.
+<FilesMatch "(^\.|\.(bak|old|orig|save|sql|sqlite|db|log|zip|tar|gz|env|ini|conf|sh|lock)$)">
+    Require all denied
+</FilesMatch>
+
+# The installer must not be reachable once the app is installed.
+<IfModule mod_rewrite.c>
+    RewriteCond %{DOCUMENT_ROOT}/install.lock -f
+    RewriteRule ^install$ - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+
+    # Long-lived caching for fingerprinted assets (app.css?v=<mtime>).
+    <FilesMatch "\.(css|js|mjs|woff2?|ttf|svg|png|jpg|jpeg|webp|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    # HTML must never be cached.
+    <FilesMatch "\.(php|html)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>
+
+# Disable directory listings and server-side includes.
+Options -Indexes -Includes -ExecCGI
+DirectoryIndex index.php
+
+<IfModule mod_php.c>
+    php_flag display_errors off
+    php_value session.use_strict_mode 1
+    php_value session.cookie_httponly 1
+    php_value expose_php off
+</IfModule>

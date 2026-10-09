@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ *  BAS-IP — LOCAL CONFIGURATION TEMPLATE
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ *  1. Copy this file:      cp .bas-ip.config.local.php.example .bas-ip.config.local.php
+ *  2. Fill in the values below.
+ *  3. chmod 600 .bas-ip.config.local.php   (owner: web-server user)
+ *
+ *  ✅ `.bas-ip.config.local.php` is in .gitignore — your secrets never leave
+ *     the server and are never lost when you `git pull` a new release.
+ *  ✅ Only the keys you actually need have to be present — everything else is
+ *     taken from `config/config.php` (deep merge).
+ *  ✅ Values may use environment placeholders:  'password' => '${ENV:DB_PASSWORD}'
+ *     and the `${secret:NAME}` marker to store the value encrypted at rest.
+ *
+ *  Full reference: wiki/03-Configuration.md (или в приложении: /help → «Конфигурация»)
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+declare(strict_types=1);
+
+return [
+
+    'app' => [
+        'name'     => 'Шлагбаум ЖК «Ромашка»',
+        'env'      => 'production',
+        'debug'    => false,
+        'url'      => 'https://gate.example.com',
+        'timezone' => 'Europe/Moscow',
+        // Generate with:  php bin/bas-ip key:generate --show
+        'key'      => 'base64:PASTE_44_CHAR_BASE64_KEY_HERE=',
+    ],
+
+    /* ── Database (MySQL by default) ─────────────────────────────────────── */
+    'db' => [
+        'default' => 'mysql',              // mysql | pgsql | sqlite
+        'connections' => [
+            'mysql' => [
+                'host'     => '127.0.0.1',
+                'port'     => 3306,
+                'database' => 'bas_ip',
+                'username' => 'bas_ip',
+                'password' => '${ENV:DB_PASSWORD}',
+                // 'unix_socket' => '/var/run/mysqld/mysqld.sock',
+            ],
+            // 'pgsql' => [
+            //     'host' => '127.0.0.1', 'port' => 5432, 'database' => 'bas_ip',
+            //     'username' => 'bas_ip', 'password' => '${ENV:DB_PASSWORD}',
+            // ],
+        ],
+    ],
+
+    /* ── The BAS-IP panel itself ─────────────────────────────────────────── */
+    'device' => [
+        'base_url' => 'http://192.168.1.20/api/v0/',
+        'login'    => 'admin',
+        'password' => '${secret:DEVICE_PASSWORD}',   // encrypted with app.key
+        'verify_tls' => false,                        // panels usually use self-signed certs
+        'camera'   => ['enabled' => true, 'mode' => 'snapshot'],
+    ],
+
+    /* ── Billing ─────────────────────────────────────────────────────────── */
+    'billing' => [
+        'currency'        => 'RUB',
+        'currency_symbol' => '₽',
+        'default_total'   => 15000.00,   // monthly maintenance total for the whole barrier
+        'due_days'        => 14,
+        'invoice_prefix'  => 'СЧ-',
+    ],
+
+    /* ── Notifications ───────────────────────────────────────────────────── */
+    'notify' => [
+        'default'  => ['mail', 'telegram'],
+        'channels' => [
+            'mail'     => ['enabled' => true],
+            'telegram' => ['enabled' => true, 'bot_token' => '${secret:TELEGRAM_BOT_TOKEN}'],
+        ],
+        'mail' => [
+            'driver'   => 'smtp',
+            'host'     => 'smtp.example.com',
+            'port'     => 465,
+            'encryption' => 'ssl',
+            'username' => 'no-reply@example.com',
+            'password' => '${secret:SMTP_PASSWORD}',
+            'from'     => ['address' => 'no-reply@example.com', 'name' => 'Шлагбаум ЖК «Ромашка»'],
+        ],
+    ],
+
+    /* ── Payment link shown in every generated message ───────────────────── */
+    'payment_link' => 'https://pay.example.com/barrier?apt={apartment}&amount={amount}',
+
+    /* ── Admin IP allowlist (optional extra layer) ───────────────────────── */
+    'auth' => [
+        'ip_allowlist' => [
+            'enabled' => false,
+            'ips'     => [],
+            'cidrs'   => ['192.168.0.0/16'],
+            'apply_to' => ['admin'],
+        ],
+    ],
+
+    /* ── Self-update ─────────────────────────────────────────────────────── */
+    'update' => [
+        'enabled' => true,
+        'mode'    => 'notify',            // 'auto' installs new releases by itself
+        'repo'    => 'paulmann/BAS-IP',
+        // 'token' => '${secret:GITHUB_TOKEN}',
+    ],
+];

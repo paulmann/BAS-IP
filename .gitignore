@@ -1,0 +1,87 @@
+# ─────────────────────────────────────────────────────────────
+#  BAS-IP — local configuration & secrets  (NEVER commit these)
+# ─────────────────────────────────────────────────────────────
+.bas-ip.config.local.php
+config/.bas-ip.config.local.php
+config/config.local.php
+config/*.local.php
+*.local.php
+.env
+.env.*
+!.env.example
+
+# Secrets / keys / tokens
+/storage/app/tokens/*
+!/storage/app/tokens/.gitkeep
+/storage/app/backups/*
+!/storage/app/backups/.gitkeep
+/storage/app/exports/*
+!/storage/app/exports/.gitkeep
+/storage/app/queue/*
+!/storage/app/queue/.gitkeep
+/storage/app/uploads/*
+!/storage/app/uploads/.gitkeep
+/storage/app/cache/*
+!/storage/app/cache/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/*.sqlite
+/storage/*.sqlite3
+/storage/*.db
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.*
+
+# Legacy token cache from v1.x
+/token/
+token/.api_token
+
+# Installer / update artefacts
+/storage/app/updates/*
+!/storage/app/updates/.gitkeep
+/public/install.lock
+/public/installed.flag
+INSTALL_LOCK
+
+# Build artefacts & dependencies
+/node_modules/
+/vendor/
+/dist/
+/build/
+/public/assets/css/*.map
+/public/assets/js/*.map
+/public/hot
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE / OS noise
+/.idea/
+/.vscode/
+*.iml
+*.sublime-*
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.directory
+
+# Test / QA output
+/coverage/
+/.phpunit.cache/
+/.php-cs-fixer.cache
+phpunit.xml
+.phpunit.result.cache
+/tests/tmp/
+
+# Composer lock is intentionally committed for apps; keep local overrides out
+/composer.phar

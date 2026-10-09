@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * BAS-IP Gate Manager — command line interface.
+ *
+ *   php bin/bas-ip list           все команды
+ *   php bin/bas-ip install        мастер установки
+ *   php bin/bas-ip doctor         самодиагностика
+ *   php bin/bas-ip schedule:run   задача для cron (каждую минуту)
+ *
+ * Работает и на Windows (php bin\bas-ip …), и в systemd-юнитах.
+ */
+
+declare(strict_types=1);
+
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, "This script must be run from the command line.\n");
+    exit(1);
+}
+
+$root = dirname(__DIR__);
+
+// ── Проверяем минимальные требования до загрузки всего остального ──────────
+if (PHP_VERSION_ID < 80200) {
+    fwrite(STDERR, sprintf(
+        "\n  BAS-IP Gate Manager требует PHP 8.2 или новее (рекомендуется 8.5).\n  Обнаружен PHP %s (%s)\n\n  Проверьте, какой интерпретатор вызывается:\n    which php / php -v\n\n",
+        PHP_VERSION,
+        PHP_BINARY
+    ));
+    exit(1);
+}
+if (PHP_VERSION_ID < 80500) {
+    fwrite(STDERR, sprintf("  [notice] Рекомендуется PHP 8.5 (обнаружен %s). Приложение работает, но новые возможности языка не используются.\n", PHP_VERSION));
+}
+foreach (['json', 'mbstring', 'pdo', 'curl'] as $required) {
+    if (!extension_loaded($required)) {
+        fwrite(STDERR, "\n  Не загружено обязательное расширение PHP: ext-$required\n\n");
+        exit(1);
+    }
+}
+
+// ── Ограничения CLI: долгие операции не должны обрываться ─────────────────
+set_time_limit(0);
+ini_set('memory_limit', '512M');
+if (function_exists('date_default_timezone_set')) {
+    // Часовой пояс будет переустановлен из конфига при старте Clock.
+    date_default_timezone_set('UTC');
+}
+
+/** @var BasIp\Core\App $app */
+$app = require $root . '/src/bootstrap.php';
+
+// Логи CLI не должны ломать вывод команды.
+$app->config()->override(['logging' => ['stderr' => false]]);
+
+$kernel = new BasIp\Console\Kernel($app);
+exit($kernel->run($argv));

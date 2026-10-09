@@ -1,0 +1,174 @@
+<?php
+
+declare(strict_types=1);
+
+namespace BasIp\Http\Middleware;
+
+use BasIp\Core\Request;
+use BasIp\Core\Response;
+use Closure;
+
+/**
+ * Security headers + a per-request CSP nonce.
+ *
+ * The CSP is built from local origins only — no CDN, no inline scripts without
+ * a nonce, no `unsafe-eval`. Everything the UI needs ships from `/assets`.
+ */
+final class SecurityHeaders extends AbstractMiddleware
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $config = $this->config();
+        $nonce  = base64_encode(random_bytes(16));
+        $this->container->set('cspNonce', $nonce);
+
+        $response = $next($request);
+
+        /* ── baseline headers — always on, independent of the CSP toggle ── */
+        $response->header('X-Request-Id', $request->requestId());
+        $response->header('X-Frame-Options', $config->string('security.headers.frame_options', 'SAMEORIGIN'));
+        if ($config->bool('security.headers.x_content_type_options', true)) {
+            $response->header('X-Content-Type-Options', 'nosniff');
+        }
+
+        // Dynamic HTML/JSON is never cached unless the controller opted in
+        // (manifest, camera snapshots, … set their own Cache-Control).
+        $existing = $response->headers();
+        if (!isset($existing['Cache-Control'])) {
+            $contentType = (string) ($existing['Content-Type'] ?? '');
+            if ($contentType === ''
+                || str_contains($contentType, 'text/html')
+                || str_contains($contentType, 'application/json')
+                || str_contains($contentType, 'text/plain')
+                || str_contains($contentType, 'text/csv')) {
+                $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private');
+            }
+        }
+
+        if (!$config->bool('security.headers.csp', true)) {
+            return $response;
+        }
+
+        $assetOrigin = $request->scheme . '://' . ($request->header('host') ?? 'localhost');
+        $directives = [
+            'default-src'   => ["'self'"],
+            'script-src'    => ["'self'", "'nonce-" . $nonce . "'"],
+            'style-src'     => ["'self'", "'unsafe-inline'"],   // theme bootstrap writes inline CSS vars
+            'img-src'       => ["'self'", 'data:', 'blob:'],
+            'font-src'      => ["'self'", 'data:'],
+            'connect-src'  => ["'self'"],
+            'media-src'     => ["'self'", 'blob:'],
+            'object-src'    => ["'none'"],
+            'frame-src'     => ["'self'"],
+            'base-uri'      => ["'self'"],
+            'form-action'   => ["'self'"],
+            'frame-ancestors' => [$config->string('security.headers.frame_ancestors', "'none'")],
+            'manifest-src'  => ["'self'"],
+            'worker-src'    => ["'self'", 'blob:'],
+        ];
+
+        // The camera proxy may point at the panel itself.
+        $deviceHost = (string) parse_url($config->string('device.base_url', ''), PHP_URL_HOST);
+        if ($deviceHost !== '' && $config->string('device.camera.mode') === 'mjpeg') {
+            $directives['img-src'][] = $request->scheme . '://' . $deviceHost . ':*';
+            $directives['media-src'][] = $request->scheme . '://' . $deviceHost . ':*';
+        }
+        // Direct (mode=mjpeg) streams of per-device cameras live on their own
+        // hosts — allow exactly those origins, nothing more.
+        foreach ($this->cameraStreamOrigins() as $origin) {
+            $directives['img-src'][] = $origin;
+            $directives['media-src'][] = $origin;
+        }
+        foreach ((array) $config->get('security.headers.csp_extra', []) as $name => $extra) {
+            $name = (string) $name;
+            $directives[$name] = array_unique(array_merge($directives[$name] ?? [], (array) $extra));
+        }
+
+        $parts = [];
+        foreach ($directives as $name => $values) {
+            $values = array_values(array_filter((array) $values, static fn ($v) => $v !== '' && $v !== null));
+            if ($values === []) {
+                continue;
+            }
+            $parts[] = $name . ' ' . implode(' ', $values);
+        }
+        unset($assetOrigin);
+        $parts[] = 'upgrade-insecure-requests';
+        if (!$request->isSecure()) {
+            $parts = array_values(array_filter($parts, static fn ($p) => $p !== 'upgrade-insecure-requests'));
+        }
+
+        $csp = implode('; ', $parts);
+        $header = $config->bool('security.headers.csp_report_only') ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy';
+        $response->header($header, $csp);
+
+        $response->header('Referrer-Policy', $config->string('security.headers.referrer_policy', 'strict-origin-when-cross-origin'));
+        $response->header('Permissions-Policy', $config->string('security.headers.permissions_policy', 'camera=(), microphone=(), geolocation=()'));
+        $response->header('Cross-Origin-Opener-Policy', 'same-origin');
+        $response->header('Cross-Origin-Resource-Policy', 'same-origin');
+
+        if ($request->isSecure() && $config->bool('app.strict_transport_security', true)) {
+            $maxAge = $config->int('security.headers.hsts_max_age', 31536000);
+            if ($maxAge > 0) {
+                $response->header('Strict-Transport-Security', 'max-age=' . $maxAge . '; includeSubDomains');
+            }
+        }
+        foreach ((array) $config->get('security.headers.custom', []) as $name => $value) {
+            $response->header((string) $name, (string) $value);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Origins (scheme://host[:port]) of cameras configured for direct mjpeg
+     * playback — collected from the devices table and cached briefly so the
+     * CSP costs one query per two minutes, not per request.
+     *
+     * @return array<int, string>
+     */
+    private function cameraStreamOrigins(): array
+    {
+        try {
+            $cache = $this->container->has(\BasIp\Core\Cache::class) ? $this->container->get(\BasIp\Core\Cache::class) : null;
+            if ($cache !== null) {
+                $cached = $cache->get('csp.camera_origins');
+                if (is_array($cached)) {
+                    return array_values(array_map('strval', $cached));
+                }
+            }
+
+            $origins = [];
+            if ($this->container->has(\BasIp\Db\Database::class)) {
+                /** @var \BasIp\Db\Database $db */
+                $db = $this->container->get(\BasIp\Db\Database::class);
+                foreach ($db->table('devices')->where('is_active', '=', 1)->get() as $row) {
+                    $options = json_decode((string) ($row['options'] ?? ''), true);
+                    $camera = is_array($options) ? (array) ($options['camera'] ?? []) : [];
+                    if (($camera['mode'] ?? '') === 'mjpeg' && isset($camera['stream_url']) && $camera['stream_url'] !== '') {
+                        $origin = self::originOf((string) $camera['stream_url']);
+                        if ($origin !== null) {
+                            $origins[] = $origin;
+                        }
+                    }
+                }
+            }
+            $origins = array_values(array_unique($origins));
+            $cache?->put('csp.camera_origins', $origins, 120);
+
+            return $origins;
+        } catch (Throwable) {
+            return [];      // not installed yet / DB down — CSP must never break a response
+        }
+    }
+
+    private static function originOf(string $url): ?string
+    {
+        $parts = parse_url($url);
+        if (!is_array($parts) || !isset($parts['scheme'], $parts['host']) || !in_array(strtolower((string) $parts['scheme']), ['http', 'https'], true)) {
+            return null;
+        }
+
+        return strtolower($parts['scheme']) . '://' . $parts['host'] . (isset($parts['port']) ? ':' . $parts['port'] : '');
+    }
+}
