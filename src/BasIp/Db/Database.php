@@ -32,7 +32,8 @@ final class Database
 {
     private ?PDO $pdo = null;
     private string $driver;
-    private string $prefix;
+    private string $prefix = '';
+    private string $effectiveCollation = '';
     private int $transactionDepth = 0;
     private int $queryCount = 0;
     private float $queryTimeMs = 0.0;
@@ -75,6 +76,26 @@ final class Database
         $this->connection = $connection ?? $this->config->string('db.default', 'mysql');
         $this->driver     = strtolower((string) $this->config->string('db.connections.' . $this->connection . '.driver', $this->connection));
         $this->prefix     = (string) $this->config->string('db.prefix', '');
+        $this->effectiveCollation = '';
+    }
+
+    /**
+     * The collation the SERVER actually accepts: MySQL-8-only collations
+     * (utf8mb4_0900_*) are degraded to utf8mb4_unicode_ci on MariaDB.
+     * DDL generation must use this instead of reading the raw config.
+     */
+    public function effectiveCollation(): string
+    {
+        if ($this->effectiveCollation === '') {
+            if ($this->isMySql()) {
+                $this->pdo();     // connects + configure() computes the real value
+            }
+            if ($this->effectiveCollation === '') {
+                $this->effectiveCollation = (string) ($this->settings()['collation'] ?? 'utf8mb4_unicode_ci');
+            }
+        }
+
+        return $this->effectiveCollation;
     }
 
     public function driver(): string
@@ -208,6 +229,14 @@ final class Database
 
         if ($this->isMySql()) {
             $collation = (string) ($settings['collation'] ?? 'utf8mb4_unicode_ci');
+            // MariaDB does not know the MySQL 8 collations (utf8mb4_0900_*) —
+            // silently degrade to the closest portable one instead of failing
+            // the very first query of a fresh installation.
+            $serverVersion = (string) $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
+            if (str_contains($serverVersion, 'MariaDB') && str_contains($collation, '_0900_')) {
+                $collation = 'utf8mb4_unicode_ci';
+            }
+            $this->effectiveCollation = $collation;
             $init = sprintf(
                 "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION', "
                 . "time_zone = '%s', NAMES %s COLLATE %s",

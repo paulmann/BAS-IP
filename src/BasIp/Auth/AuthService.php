@@ -589,10 +589,16 @@ final class AuthService
         }
 
         $now = $this->clock->format();
+        $phone = trim((string) ($data['phone'] ?? ''));
+        if ($phone !== '') {
+            $normalized = \BasIp\Support\Phone::normalize($phone);
+            $phone = $normalized !== '' ? $normalized : mb_substr($phone, 0, 32);
+        }
         $id = $this->db->table('users')->insertGetId([
             'uuid'         => Crypto::uuidv4(),
             'login'        => $login,
             'email'        => $data['email'] ?? null,
+            'phone'        => $phone !== '' ? $phone : null,
             'password_hash' => $this->hashPassword($password),
             'full_name'    => trim((string) ($data['full_name'] ?? '')) ?: $login,
             'role'         => $role,

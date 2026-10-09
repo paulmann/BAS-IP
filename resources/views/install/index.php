@@ -9,11 +9,17 @@
  * @var string $suggestedAdmin
  * @var string|null $error
  * @var array $log
+ * @var array<string, mixed>|null $report
+ * @var string|null $reportText
+ * @var array<string, mixed> $old
  */
 declare(strict_types=1);
 /** @var BasIp\Core\View $this */
 $error = $error ?? null;
 $log = $log ?? [];
+$report = $report ?? null;
+$reportText = $reportText ?? null;
+$old = $old ?? [];
 $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok']) && ($r['required'] ?? true));
 ?>
 <?php $this->layout('layouts/auth') ?>
@@ -33,8 +39,35 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
       <div>
         <div class="alert-title">Установка не завершена</div>
         <div class="alert-desc"><?= $this->e($error) ?></div>
+        <?php if ($report !== null): ?>
+          <div class="alert-desc mt-1">
+            Фаза: <code class="inline-code"><?= $this->e((string) ($report['app']['phase'] ?? '?')) ?></code>.
+            <?= $this->e((string) ($report['hint'] ?? '')) ?>
+          </div>
+        <?php endif ?>
       </div>
     </div>
+  <?php endif ?>
+
+  <?php if ($reportText !== null): ?>
+    <details class="rounded-lg border border-destructive/40 bg-destructive/5 p-3" open>
+      <summary class="cursor-pointer text-sm font-medium text-destructive">
+        Подробный отчёт об ошибке — для обращения в поддержку или анализа ИИ
+      </summary>
+      <pre id="install-report" class="mt-2 max-h-96 overflow-auto rounded-lg bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-zinc-100"><?= $this->e($reportText) ?></pre>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <button type="button" class="btn btn-outline btn-sm" data-copy-report>
+          <?= $this->icon('copy', 'h-3.5 w-3.5') ?> Скопировать отчёт
+        </button>
+        <button type="button" class="btn btn-outline btn-sm" data-download-report>
+          <?= $this->icon('download', 'h-3.5 w-3.5') ?> Скачать .txt
+        </button>
+      </div>
+      <p class="mt-2 text-xs text-muted-foreground">
+        Пароли и ключи в отчёте замаскированы. Отчёт также доступен в JSON при запросе
+        с <code class="inline-code">Accept: application/json</code>.
+      </p>
+    </details>
   <?php endif ?>
 
   <?php if ($log !== []): ?>
@@ -133,6 +166,28 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
           </div>
         </div>
 
+        <details class="rounded-lg border bg-muted/20 p-3">
+          <summary class="cursor-pointer text-sm font-medium">Дополнительно (префикс таблиц, unix-сокет)</summary>
+          <div class="mt-3 grid gap-4 sm:grid-cols-2">
+            <div class="field">
+              <label class="label" for="db_prefix">Префикс таблиц</label>
+              <input class="input input-mono" id="db_prefix" name="db_prefix" type="text" placeholder="basip_" autocomplete="off">
+              <p class="text-xs text-muted-foreground">Если база общая с другим приложением.</p>
+            </div>
+            <div class="field">
+              <label class="label" for="db_socket">Unix-сокет (MySQL)</label>
+              <input class="input input-mono" id="db_socket" name="db_socket" type="text" placeholder="/run/mysqld/mysqld.sock" autocomplete="off">
+            </div>
+          </div>
+        </details>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" class="btn btn-outline" data-test-db>
+            <?= $this->icon('plug', 'h-4 w-4') ?> Проверить соединение
+          </button>
+          <span class="text-sm text-muted-foreground" data-test-db-result aria-live="polite"></span>
+        </div>
+
         <div class="alert alert-info">
           <?= $this->icon('info', 'h-4 w-4') ?>
           <div class="alert-desc">
@@ -215,6 +270,12 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
           <?= $this->icon('shield-check', 'h-4 w-4') ?>
           <div class="alert-desc">Пароль панели сохраняется в зашифрованном хранилище секретов (<code class="inline-code">storage/app/.secrets.php</code>), а в конфиге остаётся ссылка <code class="inline-code">${secret:DEVICE_PASSWORD}</code>.</div>
         </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" class="btn btn-outline" data-test-device>
+            <?= $this->icon('zap', 'h-4 w-4') ?> Проверить панель
+          </button>
+          <span class="text-sm text-muted-foreground" data-test-device-result aria-live="polite"></span>
+        </div>
         <div class="flex justify-between">
           <button type="button" class="btn btn-ghost" data-wizard-step="app"><?= $this->icon('arrow-left', 'h-4 w-4') ?> Назад</button>
           <button type="button" class="btn btn-default" data-wizard-step="admin">Далее <?= $this->icon('arrow-right', 'h-4 w-4') ?></button>
@@ -235,22 +296,33 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
             <input class="input" id="admin_name" name="admin_name" type="text" value="Администратор" maxlength="190">
           </div>
         </div>
-        <div class="field">
-          <label class="label" for="admin_email">E-mail</label>
-          <input class="input" id="admin_email" name="admin_email" type="email" placeholder="admin@example.com">
-          <p class="text-xs text-muted-foreground">На него придёт ссылка восстановления пароля.</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="field">
+            <label class="label" for="admin_email">E-mail</label>
+            <input class="input" id="admin_email" name="admin_email" type="email" placeholder="admin@example.com">
+            <p class="text-xs text-muted-foreground">На него придёт ссылка восстановления пароля.</p>
+          </div>
+          <div class="field">
+            <label class="label" for="admin_phone">Телефон</label>
+            <input class="input input-mono" id="admin_phone" name="admin_phone" type="tel" maxlength="32" placeholder="+7 900 000-00-00" autocomplete="off">
+            <p class="text-xs text-muted-foreground">Контактный телефон администратора — для уведомлений и связи.</p>
+          </div>
         </div>
         <div class="field">
-          <label class="label" for="admin_password">Пароль <span class="text-destructive">*</span></label>
+          <label class="label" for="admin_password">Пароль</label>
           <div class="relative">
-            <input class="input input-mono pr-24" id="admin_password" name="admin_password" type="password" required minlength="10" autocomplete="new-password">
+            <input class="input input-mono pr-24" id="admin_password" name="admin_password" type="password" minlength="10" autocomplete="new-password" placeholder="оставьте пустым — сгенерируем">
             <div class="absolute inset-y-0 right-1.5 my-1.5 flex items-center gap-1">
               <button type="button" class="btn btn-ghost btn-sm h-7 px-2 text-xs" data-generate-password>Сгенерировать</button>
               <button type="button" class="btn btn-ghost btn-sm btn-icon h-7 w-7" data-secret-toggle="#admin_password" aria-label="Показать пароль"><?= $this->icon('eye', 'h-3.5 w-3.5') ?></button>
             </div>
           </div>
           <div class="mt-1.5" data-password-strength></div>
-          <p class="text-xs text-muted-foreground">Минимум 10 символов, строчные и прописные буквы, хотя бы одна цифра.</p>
+          <p class="text-xs text-muted-foreground">
+            Надёжный пароль генерируется автоматически при открытии этого шага — сохраните или замените его.
+            Если оставить поле пустым, сервер сгенерирует пароль сам и покажет его один раз после установки.
+            Требования при вводе вручную: минимум 10 символов, строчные и прописные буквы, хотя бы одна цифра.
+          </p>
         </div>
 
         <div class="alert alert-warning">
@@ -281,6 +353,14 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
 <?php $this->startPush('scripts') ?>
 <script nonce="<?= $this->e($this->nonce()) ?>">
 (function () {
+  // Значения предыдущей попытки (пароли НЕ возвращаем в разметку).
+  var OLD = <?= json_encode(array_diff_key($old, array_flip(['admin_password', 'db_password', 'device_password', '_token'])), JSON_UNESCAPED_UNICODE | JSON_HEX_APOS | JSON_HEX_QUOT) ?: '{}' ?>;
+  Object.keys(OLD).forEach(function (key) {
+    var field = document.querySelector('[name="' + key + '"]');
+    if (!field || field.type === 'checkbox' || field.type === 'radio' || field.type === 'password') return;
+    if (OLD[key] !== null && OLD[key] !== '' && field.value === (field.defaultValue || '')) field.value = OLD[key];
+  });
+
   // Переключение шагов мастера установки.
   document.querySelectorAll('[data-wizard-step]').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -317,20 +397,88 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
   });
   syncDriver();
 
-  // Генератор пароля.
+  /* ── Проверка соединения с БД и панели (до установки) ─────────────── */
+  var form = document.getElementById('install-form');
+  function csrfToken() {
+    var input = form && form.querySelector('input[name="_token"]');
+    return input ? input.value : '';
+  }
+  function fieldValue(name) {
+    var field = document.querySelector('[name="' + name + '"]');
+    if (!field) return '';
+    if (field.type === 'radio') {
+      var checked = document.querySelector('[name="' + name + '"]:checked');
+      return checked ? checked.value : '';
+    }
+    return field.value;
+  }
+  function postTest(url, fields, btn, resultEl) {
+    var body = new URLSearchParams({ _token: csrfToken() });
+    fields.forEach(function (name) { body.set(name, fieldValue(name)); });
+    var original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Проверяем…';
+    resultEl.textContent = '';
+    resultEl.className = 'text-sm text-muted-foreground';
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRF-Token': csrfToken(), 'Accept': 'application/json' },
+      body: body.toString(),
+      credentials: 'same-origin'
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      btn.disabled = false;
+      btn.innerHTML = original;
+      if (data.ok) {
+        resultEl.className = 'text-sm text-success';
+        resultEl.textContent = '✔ ' + (data.message || 'OK') + (data.server ? ' · ' + data.server : '') + (data.ms ? ' · ' + data.ms + ' мс' : '');
+      } else {
+        resultEl.className = 'text-sm text-destructive';
+        resultEl.textContent = '✖ ' + (data.error || 'Не удалось проверить');
+      }
+    }).catch(function (e) {
+      btn.disabled = false;
+      btn.innerHTML = original;
+      resultEl.className = 'text-sm text-destructive';
+      resultEl.textContent = '✖ Ошибка запроса: ' + e;
+    });
+  }
+  var testDb = document.querySelector('[data-test-db]');
+  if (testDb) {
+    testDb.addEventListener('click', function () {
+      postTest(form.getAttribute('action').replace(/\/install$/, '/install/test-db'),
+        ['db_driver', 'db_host', 'db_port', 'db_database', 'db_username', 'db_password', 'db_socket'],
+        testDb, document.querySelector('[data-test-db-result]'));
+    });
+  }
+  var testDevice = document.querySelector('[data-test-device]');
+  if (testDevice) {
+    testDevice.addEventListener('click', function () {
+      postTest(form.getAttribute('action').replace(/\/install$/, '/install/test-device'),
+        ['device_driver', 'device_base_url', 'device_login', 'device_password'],
+        testDevice, document.querySelector('[data-test-device-result]'));
+    });
+  }
+
+  /* ── Генератор пароля ──────────────────────────────────────────────── */
   var generate = document.querySelector('[data-generate-password]');
   var pass = document.getElementById('admin_password');
+  function generatePassword() {
+    var alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
+    var out = '';
+    var random = new Uint32Array(20);
+    (window.crypto || window.msCrypto).getRandomValues(random);
+    for (var i = 0; i < 20; i++) out += alphabet[random[i] % alphabet.length];
+    pass.value = out;
+    pass.dispatchEvent(new Event('input'));
+  }
   if (generate && pass) {
     generate.addEventListener('click', function () {
-      var alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
-      var out = '';
-      var random = new Uint32Array(20);
-      (window.crypto || window.msCrypto).getRandomValues(random);
-      for (var i = 0; i < 20; i++) out += alphabet[random[i] % alphabet.length];
-      pass.value = out;
+      generatePassword();
       pass.type = 'text';
-      pass.dispatchEvent(new Event('input'));
     });
+    // Автогенерация при первом открытии мастера: пароль можно заменить или
+    // скопировать (кнопка «глаз»), а пустое поле сервер заполнит сам.
+    if (pass.value === '' && !OLD.admin_password) generatePassword();
   }
 
   // Индикатор надёжности пароля.
@@ -343,13 +491,44 @@ $failed = array_filter($requirements, static fn (array $r): bool => empty($r['ok
       if (v.length >= 16) score++;
       if (/[a-zа-я]/.test(v) && /[A-ZА-Я]/.test(v)) score++;
       if (/\d/.test(v)) score++;
-      if (/[^\p{L}\p{N}]/u.test(v)) score++;
+      if (/[^A-Za-zА-Яа-я0-9]/.test(v)) score++;
       score = Math.min(4, score);
       if (!host) return;
+      if (v === '') { host.innerHTML = ''; return; }
       host.innerHTML = '<div class="flex gap-1">' + [0,1,2,3,4].map(function (i) {
         var color = score <= 1 ? 'hsl(var(--destructive))' : (score === 2 ? 'hsl(var(--warning))' : 'hsl(var(--success))');
         return '<span style="height:4px;flex:1;border-radius:9999px;background:' + (i <= score ? color : 'hsl(var(--muted))') + '"></span>';
       }).join('') + '</div><p class="mt-1 text-xs text-muted-foreground">Надёжность: ' + labels[score] + '</p>';
+    });
+    if (pass.value !== '') pass.dispatchEvent(new Event('input'));
+  }
+
+  /* ── Отчёт об ошибке: копирование и скачивание ─────────────────────── */
+  var reportEl = document.getElementById('install-report');
+  var copyBtn = document.querySelector('[data-copy-report]');
+  if (copyBtn && reportEl) {
+    copyBtn.addEventListener('click', function () {
+      var text = reportEl.textContent;
+      function done() { copyBtn.textContent = 'Скопировано ✓'; setTimeout(function () { copyBtn.innerHTML = '<?= $this->icon('copy', 'h-3.5 w-3.5') ?> Скопировать отчёт'; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta); done();
+      }
+    });
+  }
+  var downloadBtn = document.querySelector('[data-download-report]');
+  if (downloadBtn && reportEl) {
+    downloadBtn.addEventListener('click', function () {
+      var blob = new Blob([reportEl.textContent], { type: 'text/plain;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'bas-ip-install-report-<?= date('Ymd-His') ?>.txt';
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
     });
   }
 })();

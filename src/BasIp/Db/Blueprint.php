@@ -286,7 +286,7 @@ final class Blueprint
                 ' ENGINE=%s DEFAULT CHARSET=%s COLLATE=%s',
                 (string) ($settings['engine'] ?? 'InnoDB'),
                 (string) ($settings['charset'] ?? 'utf8mb4'),
-                (string) ($settings['collation'] ?? 'utf8mb4_unicode_ci')
+                $this->db->effectiveCollation()
             );
         }
 

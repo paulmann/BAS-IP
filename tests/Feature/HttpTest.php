@@ -66,7 +66,13 @@ final class HttpTest extends TestCase
     {
         $response = TestApp::request('GET', '/login', [], ['Accept' => 'text/html']);
         $this->assertSame(200, $response->statusCode());
-        $this->assertStringContains('Вход в систему', $response->getBody());
+        $body = $response->getBody();
+        $this->assertStringContains('Вход в систему', $body);
+        // Regression: the controller-declared layout must be applied — a bare
+        // form without <html>/styles shipped to browsers for a while.
+        $this->assertStringContains('<html', $body);
+        $this->assertStringContains('/assets/css/app.css', $body);
+        $this->assertStringContains('<title>Вход', $body);
     }
 
     public function testAdminAreaRedirectsAnonymousUsersToLogin(): void

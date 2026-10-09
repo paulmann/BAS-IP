@@ -84,7 +84,8 @@ if ($db->isMySql()) {
 }
 
 $applied = $migrator->migrate();
-check('migrations', count($applied) === 5, count($applied) . ' applied, ' . count($db->tables()) . ' tables');
+$migrationFiles = count(glob($root . '/database/migrations/*.php') ?: []);
+check('migrations', count($applied) === $migrationFiles, count($applied) . ' applied of ' . $migrationFiles . ', ' . count($db->tables()) . ' tables');
 
 // ── 2. seed ──────────────────────────────────────────────────────────────
 $seedFile = $root . '/database/seeds/demo.php';

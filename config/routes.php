@@ -44,6 +44,8 @@ return static function (Router $r, Container $c): void {
     // Web installer (self-disables once public/install.lock exists).
     $r->get('/install', [InstallController::class, 'show'], ['name' => 'install']);
     $r->post('/install', [InstallController::class, 'run'], ['name' => 'install.run', 'throttle' => '10,300']);
+    $r->post('/install/test-db', [InstallController::class, 'testDb'], ['name' => 'install.test_db', 'throttle' => '30,300']);
+    $r->post('/install/test-device', [InstallController::class, 'testDevice'], ['name' => 'install.test_device', 'throttle' => '30,300']);
     $r->get('/install/config', [InstallController::class, 'downloadConfig'], ['name' => 'install.config']);
 
     /* ══════════════════════ authentication ══════════════════════ */

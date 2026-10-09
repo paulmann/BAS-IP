@@ -71,12 +71,34 @@ final class View
     /**
      * Render a template (and its layout) to a string.
      *
+     * The layout can be declared two ways: the template calls
+     * `$this->layout('layouts/app')` itself (wins), or the controller passes
+     * `'layout' => 'auth'` in the view data (data-driven). Whichever way it
+     * is declared, the layout also receives the template's data, so
+     * `$title` and friends are visible inside it.
+     *
      * @param array<string, mixed> $data
      */
     public function render(string $template, array $data = []): string
     {
         $this->depth = 0;
+
+        $declared = null;
+        if (isset($data['layout']) && is_string($data['layout']) && $data['layout'] !== '') {
+            $declared = 'layouts/' . ltrim($data['layout'], '/');
+            unset($data['layout']);
+        }
+
         $content = $this->renderTemplate($template, $data);
+
+        if ($this->layout !== null && $this->layoutData === []) {
+            // Template declared a layout without data — share the view data.
+            $this->layoutData = $data;
+        }
+        if ($this->layout === null && $declared !== null && $this->resolve($declared) !== null) {
+            $this->layout     = $declared;
+            $this->layoutData = $data;
+        }
 
         $guard = 0;
         while ($this->layout !== null && $guard++ < 5) {

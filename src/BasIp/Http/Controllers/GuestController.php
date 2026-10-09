@@ -51,7 +51,7 @@ final class GuestController extends Controller
 
         return $this->view('guest/pass', [
             'title'     => 'Гостевой доступ',
-            'layout'    => 'gate',
+            'layout'    => 'guest',
             'pass'      => $pass,
             'resident'  => $resident,
             'valid'     => $pass->isActive($now),

@@ -37,6 +37,7 @@ final class User implements \JsonSerializable
         public readonly ?string $locale,
         public readonly array $preferences = [],
         public readonly ?string $createdAt = null,
+        public readonly ?string $phone = null,
     ) {
     }
 
@@ -73,6 +74,7 @@ final class User implements \JsonSerializable
             locale: isset($row['locale']) && $row['locale'] !== '' ? (string) $row['locale'] : null,
             preferences: $preferences,
             createdAt: isset($row['created_at']) ? (string) $row['created_at'] : null,
+            phone: isset($row['phone']) && $row['phone'] !== '' ? (string) $row['phone'] : null,
         );
     }
 
