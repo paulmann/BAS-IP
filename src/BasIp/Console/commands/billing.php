@@ -98,6 +98,7 @@ return [
             'notify' => 'Сразу поставить рассылку в очередь', 'template' => 'Шаблон письма',
             'dry-run' => 'Только показать расчёт, ничего не создавать',
             'no-issue' => 'Создать черновик без выставления счетов',
+            'yes' => 'Не спрашивать подтверждение',
         ],
         arguments: [], group: 'Оплаты',
         handler: static function (Input $in, Output $out, Container $c): int {
@@ -114,7 +115,16 @@ return [
                 return 1;
             }
             $allocation = $in->str('allocation', $c->get(SettingsService::class)->string('billing.last_allocation', 'equal'));
-            $preview = $billing->preview($total, $allocation);
+            $period = $in->str('period', '');
+            if ($period !== '' && $billing->parsePeriodLabel($period) === null) {
+                $out->error(sprintf(
+                    'Не удалось распознать период «%s». Примеры: 10.2026, 2026-10, «Октябрь 2026».',
+                    $period,
+                ));
+
+                return 1;
+            }
+            $preview = $billing->preview($total, $allocation, $period);
 
             if ($in->bool('dry-run')) {
                 $out->title('Предпросмотр начисления');

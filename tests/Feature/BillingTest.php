@@ -25,7 +25,82 @@ final class BillingTest extends TestCase
         TestApp::db()->table('invoices')->where('id', '>', 0)->delete();
         TestApp::db()->table('payments')->where('id', '>', 0)->delete();
         TestApp::db()->table('charges')->where('id', '>', 0)->delete();
+        TestApp::db()->table('contacts')->where('id', '>', 0)->delete();
+        TestApp::db()->table('outbox')->where('id', '>', 0)->delete();
         TestApp::db()->table('residents')->where('id', '>', 0)->delete();
+    }
+
+    /**
+     * Regression: the notification query joins invoices with residents; if the
+     * resident is hydrated from the joined row, `i.*` shadows `r.id` and every
+     * letter is addressed to the neighbour whose id equals the invoice id —
+     * a personal-data leak between residents.
+     */
+    public function testChargeNotificationsGoToTheRightResident(): void
+    {
+        $expected = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $apartment = (string) (200 + $i);
+            $email     = 'kv' . $apartment . '@example.test';
+            $lastName  = 'Квартирин' . $i;
+            $id = TestApp::makeResident([
+                'apartment'  => $apartment,
+                'last_name'  => $lastName,
+                'first_name' => 'Житель',
+                'patronymic' => 'Тестович',
+                'full_name'  => $lastName . ' Житель Тестович',
+                'email'      => $email,
+            ]);
+            TestApp::db()->table('contacts')->insert([
+                'resident_id'      => $id,
+                'type'             => 'email',
+                'value'            => $email,
+                'value_normalized' => $email,
+                'label'            => 'основная',
+                'is_primary'       => 1,
+                'notify'           => 1,
+                'created_at'       => date('Y-m-d H:i:s'),
+            ]);
+            $expected[$id] = ['email' => $email, 'name' => $lastName];
+        }
+
+        $result = $this->billing->createCharge(['total_amount' => 5000, 'title' => 'Рассылка', 'issue' => true]);
+        $this->assertTrue($result['ok'], (string) ($result['error'] ?? ''));
+
+        $notify = $this->billing->notifyCharge((int) $result['id']);
+        $this->assertSame(5, $notify['queued']);
+
+        $rows = TestApp::db()->table('outbox')->where('id', '>', 0)->get();
+        $this->assertSame(5, count($rows));
+        foreach ($rows as $row) {
+            $residentId = (int) $row['resident_id'];
+            $this->assertTrue(isset($expected[$residentId]), 'outbox.resident_id must reference a charged resident, not an invoice id');
+            $this->assertSame($expected[$residentId]['email'], (string) $row['recipient'], 'the letter must be addressed to its own resident');
+            $this->assertStringContains($expected[$residentId]['name'], (string) $row['body']);
+        }
+    }
+
+    public function testPeriodLabelParsingAndNormalization(): void
+    {
+        foreach ([['2026-10', '2026-10-01'], ['10.2026', '2026-10-01'], ['Октябрь 2026', '2026-10-01'], ['2026-10-15', '2026-10-01'], ['за 09.2026 год', '2026-09-01']] as [$label, $start]) {
+            $parsed = $this->billing->parsePeriodLabel($label);
+            $this->assertTrue($parsed !== null, '«' . $label . '» must be recognised');
+            $this->assertSame($start, $parsed[0]);
+        }
+        $this->assertTrue($this->billing->parsePeriodLabel('мусор') === null);
+        $this->assertTrue($this->billing->parsePeriodLabel('13.2026') === null);
+
+        TestApp::makeResident(['apartment' => '301']);
+
+        // A technical label is normalised for invoices and letters…
+        $r = $this->billing->createCharge(['total_amount' => 1000, 'period_label' => '2026-11', 'issue' => false, 'title' => 'T']);
+        $this->assertTrue($r['ok'], (string) ($r['error'] ?? ''));
+        $this->assertSame('Ноябрь 2026', $this->billing->charge((int) $r['id'])->periodLabel);
+
+        // …while free text is preserved verbatim.
+        $r2 = $this->billing->createCharge(['total_amount' => 1000, 'period_label' => 'Сентябрь 2026', 'issue' => false, 'title' => 'T2']);
+        $this->assertTrue($r2['ok'], (string) ($r2['error'] ?? ''));
+        $this->assertSame('Сентябрь 2026', $this->billing->charge((int) $r2['id'])->periodLabel);
     }
 
     public function testSplitIsExactToTheKopeck(): void

@@ -111,6 +111,33 @@ final class ResidentRepository
         return $row === null ? null : $this->hydrate($row, true);
     }
 
+    /**
+     * Bulk-load residents with their contacts and cars for a mass mailing.
+     *
+     * Unlike {@see findByIds()} this keeps switched-off residents: the caller
+     * decides the audience (mass actions filter by `is_active` themselves) and
+     * must never fall back to a partial row — see BillingService::notifyCharge.
+     *
+     * @param array<int, int> $ids
+     * @return array<int, Resident> keyed by resident id
+     */
+    public function findManyWithRelations(array $ids): array
+    {
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+        if ($ids === []) {
+            return [];
+        }
+
+        $rows = $this->db->table('residents')->whereIn('residents.id', $ids)->whereNull('residents.deleted_at')->get();
+
+        $out = [];
+        foreach ($this->loadRelations($this->hydrateMany($rows, false)) as $resident) {
+            $out[$resident->id] = $resident;
+        }
+
+        return $out;
+    }
+
     /** @return array<int, Resident> */
     public function findByIds(array $ids, bool $onlyActive = true): array
     {

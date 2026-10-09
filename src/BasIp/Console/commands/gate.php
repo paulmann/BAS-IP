@@ -27,6 +27,7 @@ return [
             'resident' => 'ID жителя', 'apartment' => 'Номер квартиры', 'plate' => 'Госномер',
             'device' => 'Slug устройства', 'channel' => 'Канал реле', 'note' => 'Комментарий в журнал',
             'access' => 'Тип доступа: own|guest|manual|remote|emergency|api (по умолчанию remote)',
+            'force'  => 'Открыть без проверки доступа (аварийное открытие)',
         ],
         arguments: [], group: 'Шлагбаум',
         handler: static function (Input $in, Output $out, Container $c): int {
@@ -252,6 +253,7 @@ return [
             'limit' => 'Сколько записей показать', 'access' => 'Фильтр по типу доступа',
             'result' => 'success|denied|error', 'from' => 'Дата с', 'to' => 'Дата по',
             'resident' => 'ID жителя', 'json' => 'Вывод в JSON', 'stats' => 'Только сводка',
+            'days' => 'Период сводки в днях (со --stats, по умолчанию 30)',
         ],
         arguments: [], group: 'Шлагбаум',
         handler: static function (Input $in, Output $out, Container $c): int {

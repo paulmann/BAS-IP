@@ -83,6 +83,27 @@ final class Kernel
         }
 
         $command = $this->commands[$name];
+
+        // Reject unknown options loudly: a silent typo (`--sum` instead of
+        // `--total`) must not turn into «command succeeded with defaults».
+        $allowed = array_merge(
+            array_map('strval', array_keys($command->options)),
+            ['help', 'h', 'verbose', 'v', 'quiet', 'q', 'no-ansi', 'version', 'V'],
+        );
+        foreach ($input->optionNames() as $given) {
+            if (in_array($given, $allowed, true)) {
+                continue;
+            }
+            $this->output->error(sprintf('Неизвестная опция команды %s: --%s', $name, $given));
+            $closest = $this->suggest($given, $allowed);
+            if ($closest !== null) {
+                $this->output->line('  Возможно, вы имели в виду: <cyan>--' . $closest . '</cyan>');
+            }
+            $this->output->line('  Справка: <cyan>bin/bas-ip ' . $name . ' --help</cyan>');
+
+            return 1;
+        }
+
         $startedAt = microtime(true);
 
         try {
@@ -236,15 +257,17 @@ final class Kernel
         return 0;
     }
 
-    private function suggest(string $name): ?string
+    /** Closest match by edit distance — for commands and option names alike.
+     *  @param array<int, string>|null $candidates defaults to registered commands */
+    private function suggest(string $name, ?array $candidates = null): ?string
     {
         $best = null;
         $bestDistance = PHP_INT_MAX;
-        foreach (array_keys($this->commands) as $candidate) {
-            $distance = levenshtein($name, $candidate);
+        foreach ($candidates ?? array_keys($this->commands) as $candidate) {
+            $distance = levenshtein($name, (string) $candidate);
             if ($distance < $bestDistance) {
                 $bestDistance = $distance;
-                $best = $candidate;
+                $best = (string) $candidate;
             }
         }
 

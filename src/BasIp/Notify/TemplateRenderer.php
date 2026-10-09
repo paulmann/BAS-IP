@@ -51,6 +51,10 @@ final class TemplateRenderer
     /**
      * Replace `{token}` and `{token|modifier:arg}` occurrences.
      *
+     * After substitution, multi-line texts drop rows that degenerated into a
+     * bare label with an empty value («Оплатить: {pay_link}» without a link
+     * configured) — a dangling label looks like a bug in the finished letter.
+     *
      * @param array<string, mixed> $context
      */
     public function interpolate(string $text, array $context): string
@@ -59,7 +63,7 @@ final class TemplateRenderer
             return $text;
         }
 
-        return (string) preg_replace_callback('/\{\s*([a-zA-Z0-9_.]+)\s*(?:\|\s*([a-zA-Z0-9_]+)\s*(?::\s*([^}]*?))?\s*)?\}/', static function (array $m) use ($context): string {
+        $rendered = (string) preg_replace_callback('/\{\s*([a-zA-Z0-9_.]+)\s*(?:\|\s*([a-zA-Z0-9_]+)\s*(?::\s*([^}]*?))?\s*)?\}/', static function (array $m) use ($context): string {
             $key      = $m[1];
             $modifier = isset($m[2]) && $m[2] !== '' ? strtolower($m[2]) : null;
             $arg      = isset($m[3]) ? trim($m[3]) : null;
@@ -71,6 +75,35 @@ final class TemplateRenderer
 
             return self::applyModifier($value, $modifier, $arg);
         }, $text);
+
+        return self::dropEmptyLabelLines($rendered);
+    }
+
+    /** Remove «Label:» lines whose placeholder interpolated to nothing. */
+    private static function dropEmptyLabelLines(string $text): string
+    {
+        if (!str_contains($text, "\n")) {
+            return $text;                           // subjects stay untouched
+        }
+
+        $lines  = explode("\n", $text);
+        $kept   = [];
+        $dropped = 0;
+        foreach ($lines as $line) {
+            if (preg_match('/^\s*[^\s:][^:\n]{0,39}:\s*$/u', $line) === 1) {
+                $dropped++;
+                continue;
+            }
+            $kept[] = $line;
+        }
+        if ($dropped === 0 || $kept === []) {
+            return $text;
+        }
+
+        // Collapse the blank gap the dropped line leaves behind («…\n\n\nКвартира…» → «…\n\nКвартира…»).
+        $joined = implode("\n", $kept);
+
+        return (string) preg_replace('/\n{3,}/', "\n\n", $joined);
     }
 
     private static function applyModifier(mixed $value, ?string $modifier, ?string $arg): string

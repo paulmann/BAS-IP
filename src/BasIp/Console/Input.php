@@ -68,6 +68,17 @@ final class Input
         return array_key_exists($name, $this->options);
     }
 
+    /**
+     * Every option name present on the command line, in the order given.
+     * The kernel uses this to reject typos instead of silently ignoring them.
+     *
+     * @return array<int, string>
+     */
+    public function optionNames(): array
+    {
+        return array_map('strval', array_keys($this->options));
+    }
+
     public function bool(string $name, bool $default = false): bool
     {
         $value = $this->options[$name] ?? $default;

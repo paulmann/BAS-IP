@@ -245,7 +245,7 @@ final class View
     public function asset(string $path): string
     {
         $path  = ltrim($path, '/');
-        $file  = $this->config->getPath('public') . '/' . $path;
+        $file  = $this->config->getPath('public') . '/assets/' . $path;
         $version = is_file($file) ? substr((string) filemtime($file), -6) : $this->config->string('app.version', '1');
 
         return $this->url('assets/' . $path, ['v' => $version]);

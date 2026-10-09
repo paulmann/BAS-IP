@@ -447,7 +447,7 @@ return [
         name: 'migrate:rollback',
         description: 'Откатить последний пакет миграций',
         usage: 'bin/bas-ip migrate:rollback [--step=1]',
-        options: ['step' => 'Сколько пакетов откатить (по умолчанию 1)'],
+        options: ['step' => 'Сколько пакетов откатить (по умолчанию 1)', 'force' => 'Без подтверждения'],
         arguments: [], group: 'База данных',
         handler: static function (Input $in, Output $out, Container $c): int {
             /** @var Migrator $migrator */

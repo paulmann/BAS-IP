@@ -151,7 +151,12 @@ final class BillingService
         if ($periodStart === null) {
             [$periodStart, $periodEnd] = $this->guessPeriod((string) ($input['period_label'] ?? ''));
         }
-        $periodLabel = Str::squash((string) ($input['period_label'] ?? '')) ?: $this->periodLabel($periodStart, $periodEnd);
+        $rawLabel = Str::squash((string) ($input['period_label'] ?? ''));
+        // A technical label («2026-10», «10.2026») is normalised to the human
+        // form used everywhere in the UI and letters; free text is kept as-is.
+        $periodLabel = $rawLabel !== '' && preg_match('/^\d/u', $rawLabel) === 1 && $this->parsePeriodLabel($rawLabel) !== null
+            ? $this->periodLabel($periodStart, $periodEnd)
+            : ($rawLabel ?: $this->periodLabel($periodStart, $periodEnd));
         $dueDays = max(0, (int) ($input['due_days'] ?? $this->config->int('billing.due_days', 14)));
         $dueDate = $this->dateOrNull($input['due_date'] ?? null)
             ?? $this->clock->format('Y-m-d', $this->clock->now() + $dueDays * 86400);
@@ -1349,24 +1354,36 @@ final class BillingService
         }
 
         $q = $this->db->table('invoices i')
-            ->select('i.*', 'r.full_name', 'r.apartment', 'r.building', 'r.phone', 'r.email', 'r.is_active', 'r.notify_enabled', 'r.balance')
+            ->select('i.*', 'r.is_active AS resident_active', 'r.notify_enabled AS resident_notify')
             ->innerJoin('residents r', 'r.id', '=', 'i.resident_id')
             ->where('i.charge_id', '=', $chargeId)
             ->where('i.status', '!=', Invoice::STATUS_VOID);
         if ($residentIds !== []) {
             $q = $q->whereIn('i.resident_id', $residentIds);
         }
+        $rows = $q->get();
+
+        // Recipients are re-loaded from the repository on purpose: hydrating a
+        // Resident straight from the joined row would pick up the *invoice* id
+        // (`i.*` shadows `r.id`) and address the letter to a neighbour.
+        $recipients = $this->residents->findManyWithRelations(
+            array_map(static fn (array $row): int => (int) $row['resident_id'], $rows),
+        );
 
         $messages = [];
         $skipped  = 0;
-        foreach ($q->get() as $row) {
+        foreach ($rows as $row) {
             // Mass actions always ignore residents who are switched off.
-            if (!Str::toBoolSafe($row['is_active'] ?? false) || !Str::toBoolSafe($row['notify_enabled'] ?? true)) {
+            if (!Str::toBoolSafe($row['resident_active'] ?? false) || !Str::toBoolSafe($row['resident_notify'] ?? true)) {
                 $skipped++;
                 continue;
             }
             $invoice  = Invoice::fromRow($row);
-            $resident = Resident::fromRow($row);
+            $resident = $recipients[(int) $row['resident_id']] ?? null;
+            if ($resident === null) {
+                $skipped++;
+                continue;
+            }
             $context  = $this->messageContext($resident, $charge, $invoice);
 
             if ($messageOverride !== null && trim($messageOverride) !== '') {
@@ -1570,18 +1587,84 @@ final class BillingService
     /** Default period = the previous calendar month. @return array{0: string, 1: string} */
     public function guessPeriod(string $label = ''): array
     {
-        if ($label !== '' && preg_match('/(\d{1,2})[.\/](\d{4})/', $label, $m)) {
-            $month = (int) $m[1];
-            $year  = (int) $m[2];
-        } else {
-            $prev  = (new \DateTimeImmutable($this->clock->format('Y-m-01')))->modify('first day of previous month');
-            $month = (int) $prev->format('n');
-            $year  = (int) $prev->format('Y');
+        $parsed = $this->parsePeriodLabel($label);
+        if ($parsed !== null) {
+            return $parsed;
+        }
+
+        $prev  = (new \DateTimeImmutable($this->clock->format('Y-m-01')))->modify('first day of previous month');
+        $month = (int) $prev->format('n');
+        $year  = (int) $prev->format('Y');
+
+        $start = sprintf('%04d-%02d-01', $year, $month);
+
+        return [$start, date('Y-m-t', (int) strtotime($start))];
+    }
+
+    /**
+     * Recognise a period label in any format the UI and the CLI accept:
+     *
+     *   «09.2026» · «9/2026» · «2026-09» · «2026-09-15» · «Сентябрь 2026» ·
+     *   «сентябрь» (current year) · «оплата за 09.2026» (embedded)
+     *
+     * Returns `null` when nothing matches, so callers can either fall back to
+     * the previous month (free-form titles) or reject the input loudly (CLI).
+     *
+     * @return array{0: string, 1: string}|null `[Y-m-01, Y-m-t]`
+     */
+    public function parsePeriodLabel(string $label): ?array
+    {
+        $label = trim($label);
+        if ($label === '') {
+            return null;
+        }
+
+        $month = null;
+        $year  = null;
+
+        if (preg_match('/^(\d{4})-(\d{1,2})(?:-\d{1,2})?$/', $label, $m)) {
+            [$year, $month] = [(int) $m[1], (int) $m[2]];                      // 2026-09 / 2026-09-15
+        } elseif (preg_match('/^(\d{1,2})[.\/](\d{4})$/', $label, $m)) {
+            [$month, $year] = [(int) $m[1], (int) $m[2]];                      // 09.2026 / 9/2026
+        } elseif (preg_match('/^([А-Яа-яЁё]{3,})\s*(\d{4})?$/u', $label, $m)) {
+            $month = self::monthByName($m[1]);                                  // Сентябрь 2026 / сентябрь
+            $year  = isset($m[2]) && $m[2] !== '' ? (int) $m[2] : (int) $this->clock->format('Y');
+        } elseif (preg_match('/(\d{1,2})[.\/](\d{4})/', $label, $m)) {
+            [$month, $year] = [(int) $m[1], (int) $m[2]];                      // «за 09.2026 год»
+        } elseif (preg_match('/(\d{4})-(\d{1,2})/', $label, $m)) {
+            [$year, $month] = [(int) $m[1], (int) $m[2]];                      // «период 2026-09»
+        }
+
+        if ($month === null || $month < 1 || $month > 12 || $year === null || $year < 2000 || $year > 2100) {
+            return null;
         }
 
         $start = sprintf('%04d-%02d-01', $year, $month);
 
         return [$start, date('Y-m-t', (int) strtotime($start))];
+    }
+
+    /** «сентябрь», «сент», «сен» → 9 (или null). */
+    private static function monthByName(string $name): ?int
+    {
+        $name = mb_strtolower(trim($name));
+        $months = [
+            'январь' => 1, 'февраль' => 2, 'март' => 3, 'апрель' => 4, 'май' => 5, 'июнь' => 6,
+            'июль' => 7, 'август' => 8, 'сентябрь' => 9, 'октябрь' => 10, 'ноябрь' => 11, 'декабрь' => 12,
+        ];
+        if (isset($months[$name])) {
+            return $months[$name];
+        }
+        if (mb_strlen($name) < 3) {
+            return null;
+        }
+        foreach ($months as $full => $number) {
+            if (str_starts_with($full, $name)) {
+                return $number;
+            }
+        }
+
+        return null;
     }
 
     public function periodLabel(?string $start, ?string $end = null): string

@@ -391,26 +391,28 @@ return [
             'cron_every_minutes' => 1,
         ],
         'templates' => [
-            // {name}, {apartment}, {amount}, {currency}, {period}, {due_date}, {pay_link}, {deadline}, {gate}, {code}
+            // {name}, {apartment}, {amount} (уже с символом валюты), {currency} (ISO-код),
+            // {period}, {due_date}, {pay_link}, {deadline}, {gate}, {code}
+            // Строки, где после подстановки остаётся одно пустое «Подпись:», автоматически удаляются.
             'payment_new' => [
                 'subject' => 'Оплата обслуживания шлагбаума — {period}',
-                'body'    => "Здравствуйте, {name}!\n\nНачислена оплата за обслуживание шлагбаума за {period}: {amount} {currency}.\nСрок оплаты: {due_date}.\n\nОплатить: {pay_link}\n\nКвартира {apartment}.\nЭто автоматическое сообщение.",
+                'body'    => "Здравствуйте, {name}!\n\nНачислена оплата за обслуживание шлагбаума за {period}: {amount}.\nСрок оплаты: {due_date}.\n\nОплатить: {pay_link}\n\nКвартира {apartment}.\nЭто автоматическое сообщение.",
             ],
             'payment_reminder' => [
                 'subject' => 'Напоминание: оплата шлагбаума до {due_date}',
-                'body'    => "Здравствуйте, {name}!\n\nНапоминаем об оплате {amount} {currency} за обслуживание шлагбаума ({period}).\nСрок: {due_date}.\n\nОплатить: {pay_link}",
+                'body'    => "Здравствуйте, {name}!\n\nНапоминаем об оплате {amount} за обслуживание шлагбаума ({period}).\nСрок: {due_date}.\n\nОплатить: {pay_link}",
             ],
             'payment_overdue' => [
                 'subject' => 'Просроченная оплата шлагбаума',
-                'body'    => "Здравствуйте, {name}!\n\nЗадолженность за обслуживание шлагбаума: {amount} {currency}.\nПросим оплатить в ближайшее время: {pay_link}\n\nПри длительной задолженности доступ может быть ограничен.",
+                'body'    => "Здравствуйте, {name}!\n\nЗадолженность за обслуживание шлагбаума: {amount}.\nПросим оплатить в ближайшее время: {pay_link}\n\nПри длительной задолженности доступ может быть ограничен.",
             ],
             'payment_received' => [
                 'subject' => 'Оплата получена — спасибо!',
-                'body'    => "{name}, оплата {amount} {currency} за {period} получена. Спасибо!\nОстаток: {balance} {currency}.",
+                'body'    => "{name}, оплата {amount} за {period} получена. Спасибо!\nОстаток: {balance}.",
             ],
             'charge_recalculated' => [
                 'subject' => 'Перерасчёт оплаты за {period}',
-                'body'    => "Здравствуйте, {name}!\n\nПроизведён перерасчёт за {period}: {amount} {currency}.\n{reason}\n\nОплатить: {pay_link}",
+                'body'    => "Здравствуйте, {name}!\n\nПроизведён перерасчёт за {period}: {amount}.\n{reason}\n\nОплатить: {pay_link}",
             ],
             'guest_created' => [
                 'subject' => 'Гостевой доступ создан',
