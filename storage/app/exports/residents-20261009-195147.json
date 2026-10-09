@@ -1,0 +1,120 @@
+{
+    "meta": {
+        "app": "BAS-IP Gate Manager",
+        "version": "2.0.0",
+        "exported_at": "2026-10-09T19:51:47+03:00",
+        "rows": 1,
+        "options": {
+            "format": "json",
+            "scope": "all",
+            "include": [
+                "contacts",
+                "cars",
+                "payments",
+                "invoices"
+            ]
+        }
+    },
+    "residents": [
+        {
+            "id": 1,
+            "external_id": null,
+            "last_name": "Иванов",
+            "first_name": "Иван",
+            "patronymic": "Иванович",
+            "full_name": "Иванов Иван Иванович",
+            "apartment": "1",
+            "apartment_no": 1,
+            "building": "1",
+            "entrance": "1",
+            "floor": 1,
+            "area": "28.00",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79040446299",
+            "email": "Ivanov.i1@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [
+                "староста",
+                "актив"
+            ],
+            "notes": "Просил напоминать об оплате за 3 дня.",
+            "balance": "-3000.00",
+            "last_payment_at": "2026-10-09 00:00:00",
+            "created_at": "2026-02-17 19:51:13",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79040446299",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79086365550",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74954035869",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Ivanov.i1@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.ivanov@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [],
+            "payments": [
+                {
+                    "date": "2026-10-09",
+                    "amount": 15000,
+                    "method": "cash",
+                    "reference": null,
+                    "note": null
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "INV-2026-00001",
+                    "period": "Сентябрь 2026",
+                    "amount": 15000,
+                    "paid": 15000,
+                    "status": "paid",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00002-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 3000,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        }
+    ]
+}

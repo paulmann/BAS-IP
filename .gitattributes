@@ -1,0 +1,24 @@
+* text=auto eol=lf
+
+# Binary assets — never touch line endings
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.svg    text eol=lf
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+
+# Not needed in production exports
+/.github     export-ignore
+/docs        export-ignore
+/tests       export-ignore
+/tools       export-ignore
+/wiki        export-ignore
+/deploy      export-ignore
+*.md         export-ignore
+!README.md   export-ignore-ignore
+.gitattributes export-ignore
+.gitignore   export-ignore

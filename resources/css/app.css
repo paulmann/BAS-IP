@@ -1,0 +1,30 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BAS-IP Gate Manager · single stylesheet entry point
+   ─────────────────────────────────────────────────────────────────────────
+   Build (local Tailwind, no CDN):
+       npm ci && npm run build      →  public/assets/css/app.css
+       npm run watch                →  rebuild on change
+
+   Layers, in order:
+       1. tailwind base/utilities  — reset + generated utilities
+       2. fonts.css                — vendored woff2 (Inter, JetBrains Mono)
+       3. tokens.css               — shadcn/ui design tokens (light + dark)
+       4. components.css           — hand-ported shadcn/ui primitives
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import './fonts.css';
+@import './tokens.css';
+@import './components.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* A few extras Tailwind does not generate that the templates rely on. */
+  .animate-in-fast { animation: fade-in-up .18s cubic-bezier(.16,1,.3,1) both; }
+  .hyphens-auto { hyphens: auto; }
+  .writing-vertical { writing-mode: vertical-rl; }
+  .contain-paint { contain: paint; }
+  .content-auto { content-visibility: auto; contain-intrinsic-size: auto 320px; }
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 9" width="1600" height="900" role="img" aria-label="Ожидание кадра с камеры">
+  <rect width="16" height="9" fill="#18181b"/>
+  <g fill="none" stroke="#3f3f46" stroke-width=".06">
+    <path d="M0 0h16M0 1.5h16M0 3h16M0 4.5h16M0 6h16M0 7.5h16"/>
+    <path d="M0 0v9M2 0v9M4 0v9M6 0v9M8 0v9M10 0v9M12 0v9M14 0v9M16 0v9"/>
+  </g>
+  <g transform="translate(8 4.5)" text-anchor="middle" font-family="system-ui,sans-serif">
+    <circle r="1.1" fill="none" stroke="#52525b" stroke-width=".08"/>
+    <path d="M-.45-.35 L.6 0 L-.45.35 Z" fill="#71717a"/>
+    <text y="1.9" font-size=".5" fill="#71717a">ожидание кадра</text>
+  </g>
+</svg>

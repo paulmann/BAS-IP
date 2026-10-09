@@ -1,0 +1,2 @@
+Icons: Lucide (https://lucide.dev) — ISC License, Copyright (c) Lucide contributors.
+Vendored locally as an SVG sprite so the app never depends on a CDN.

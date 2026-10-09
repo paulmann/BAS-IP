@@ -1,0 +1,2830 @@
+{
+    "meta": {
+        "app": "BAS-IP Gate Manager",
+        "version": "2.0.0",
+        "exported_at": "2026-10-09T19:54:38+03:00",
+        "rows": 24,
+        "options": {
+            "format": "json",
+            "scope": "all",
+            "include": [
+                "contacts",
+                "cars",
+                "payments",
+                "invoices"
+            ]
+        }
+    },
+    "residents": [
+        {
+            "id": 1,
+            "external_id": null,
+            "last_name": "Иванов",
+            "first_name": "Иван",
+            "patronymic": "Иванович",
+            "full_name": "Иванов Иван Иванович",
+            "apartment": "1",
+            "apartment_no": 1,
+            "building": "1",
+            "entrance": "1",
+            "floor": 1,
+            "area": "28.00",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79092335715",
+            "email": "Ivanov.i1@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [
+                "староста",
+                "актив"
+            ],
+            "notes": "Просил напоминать об оплате за 3 дня.",
+            "balance": "-218.19",
+            "last_payment_at": "2026-10-09 00:00:00",
+            "created_at": "2026-07-12 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79092335715",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79081301480",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74955242090",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Ivanov.i1@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.ivanov@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Х101НМ187",
+                    "brand": "Nissan",
+                    "model": "Qashqai",
+                    "color": "серый",
+                    "year": 2019,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-F35F1BD6",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-09",
+                    "amount": 750,
+                    "method": "cash",
+                    "reference": null,
+                    "note": null
+                },
+                {
+                    "date": "2026-10-23",
+                    "amount": 750,
+                    "method": "transfer",
+                    "reference": "ПЛ-F49357",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-90001-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 150,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-09",
+                    "kind": "adjustment"
+                },
+                {
+                    "number": "СЧ-2026-00001",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00001",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00021-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.19,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "external_id": null,
+            "last_name": "Петрова",
+            "first_name": "Мария",
+            "patronymic": "Петрович",
+            "full_name": "Петрова Мария Петрович",
+            "apartment": "2",
+            "apartment_no": 2,
+            "building": "1",
+            "entrance": "2",
+            "floor": 2,
+            "area": "39.50",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79079136210",
+            "email": "Petrova.m2@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "31.81",
+            "last_payment_at": "2026-10-09 00:00:00",
+            "created_at": "2025-08-20 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79079136210",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Petrova.m2@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@petrova2",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "К997УА19",
+                    "brand": "Renault",
+                    "model": "Duster",
+                    "color": "серебристый",
+                    "year": 2020,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "О905ХВ120",
+                    "brand": "Geely",
+                    "model": "Coolray",
+                    "color": "серебристый",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-09",
+                    "amount": 750,
+                    "method": "transfer",
+                    "reference": null,
+                    "note": null
+                },
+                {
+                    "date": "2026-10-24",
+                    "amount": 750,
+                    "method": "card",
+                    "reference": "ПЛ-7B44FC",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-90002-С",
+                    "period": "Сентябрь 2026",
+                    "amount": -100,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-09",
+                    "kind": "credit"
+                },
+                {
+                    "number": "СЧ-2026-00002",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00002",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00022-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.19,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "external_id": null,
+            "last_name": "Сидоров",
+            "first_name": "Алексей",
+            "patronymic": "Сергеевич",
+            "full_name": "Сидоров Алексей Сергеевич",
+            "apartment": "3",
+            "apartment_no": 3,
+            "building": "1",
+            "entrance": "3",
+            "floor": 3,
+            "area": "51.00",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79063911526",
+            "email": "Sidorov.a3@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1193.19",
+            "last_payment_at": "2026-10-21 00:00:00",
+            "created_at": "2025-03-06 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79063911526",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79060590078",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Sidorov.a3@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "К678ОН76",
+                    "brand": "Chery",
+                    "model": "Tiggo 7",
+                    "color": "белый",
+                    "year": 2022,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "С591ХМ173",
+                    "brand": "Geely",
+                    "model": "Coolray",
+                    "color": "красный",
+                    "year": 2016,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "У848РК196",
+                    "brand": "Kia",
+                    "model": "Rio",
+                    "color": "красный",
+                    "year": 2022,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-21",
+                    "amount": 375,
+                    "method": "sbp",
+                    "reference": "ПЛ-111CF3",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00003",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 375,
+                    "status": "partial",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00003",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00023-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.19,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "external_id": null,
+            "last_name": "Кузнецова",
+            "first_name": "Ольга",
+            "patronymic": "Андреевич",
+            "full_name": "Кузнецова Ольга Андреевич",
+            "apartment": "4",
+            "apartment_no": 4,
+            "building": "1",
+            "entrance": "4",
+            "floor": 4,
+            "area": "62.50",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79038283891",
+            "email": "Kuznecova.o4@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 0,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "0.00",
+            "last_payment_at": null,
+            "created_at": "2024-10-07 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79038283891",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74954511360",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Kuznecova.o4@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@kuznecova4",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "С234РХ158",
+                    "brand": "Renault",
+                    "model": "Duster",
+                    "color": "серебристый",
+                    "year": 2019,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-9FD7B426",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": []
+        },
+        {
+            "id": 5,
+            "external_id": null,
+            "last_name": "Смирнов",
+            "first_name": "Дмитрий",
+            "patronymic": "Ивановна",
+            "full_name": "Смирнов Дмитрий Ивановна",
+            "apartment": "5",
+            "apartment_no": 5,
+            "building": "1",
+            "entrance": "1",
+            "floor": 5,
+            "area": "74.00",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "tenant",
+            "phone": "+79077765350",
+            "email": "Smirnov.d5@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.19",
+            "last_payment_at": null,
+            "created_at": "2026-03-12 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79077765350",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79046466020",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Smirnov.d5@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.smirno@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Н140УК93",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "серебристый",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Е053ХХ190",
+                    "brand": "Lada",
+                    "model": "Vesta",
+                    "color": "серебристый",
+                    "year": 2019,
+                    "type": "car",
+                    "is_active": false,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00004",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00004",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00024-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.19,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "external_id": null,
+            "last_name": "Васильева",
+            "first_name": "Анна",
+            "patronymic": "Петровна",
+            "full_name": "Васильева Анна Петровна",
+            "apartment": "6",
+            "apartment_no": 6,
+            "building": "1",
+            "entrance": "2",
+            "floor": 6,
+            "area": "85.50",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79069345335",
+            "email": "Vasileva.a6@example.com",
+            "access_granted": 0,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-10-03 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79069345335",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Vasileva.a6@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@vasileva6",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Т518КС152",
+                    "brand": "Lada",
+                    "model": "Vesta",
+                    "color": "серый",
+                    "year": 2018,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "В136УС41",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "белый",
+                    "year": 2022,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Т341ВК117",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "белый",
+                    "year": 2023,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00005",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00005",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00025-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "external_id": null,
+            "last_name": "Соколов",
+            "first_name": "Сергей",
+            "patronymic": "Сергеевна",
+            "full_name": "Соколов Сергей Сергеевна",
+            "apartment": "7",
+            "apartment_no": 7,
+            "building": "1",
+            "entrance": "3",
+            "floor": 7,
+            "area": "97.00",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79058386241",
+            "email": "Sokolov.s7@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": "Просил напоминать об оплате за 3 дня.",
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-01 00:00:00",
+            "created_at": "2025-03-21 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79058386241",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79049654826",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74955694587",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Sokolov.s7@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "У964ТЕ141",
+                    "brand": "Renault",
+                    "model": "Duster",
+                    "color": "чёрный",
+                    "year": 2022,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-E0853BBB",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-01",
+                    "amount": 750,
+                    "method": "transfer",
+                    "reference": "ПЛ-25F12C",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00006",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00006",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00026-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "external_id": null,
+            "last_name": "Михайлова",
+            "first_name": "Елена",
+            "patronymic": "Николаевич",
+            "full_name": "Михайлова Елена Николаевич",
+            "apartment": "8",
+            "apartment_no": 8,
+            "building": "1",
+            "entrance": "4",
+            "floor": 8,
+            "area": "28.00",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79027575380",
+            "email": "Mihaylova.e8@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [
+                "староста",
+                "актив"
+            ],
+            "notes": null,
+            "balance": "-818.18",
+            "last_payment_at": null,
+            "created_at": "2026-06-28 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79027575380",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Mihaylova.e8@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@mihaylova8",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "У506РС80",
+                    "brand": "Renault",
+                    "model": "Duster",
+                    "color": "синий",
+                    "year": 2022,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Р033АЕ86",
+                    "brand": "Toyota",
+                    "model": "Camry",
+                    "color": "чёрный",
+                    "year": 2018,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "INV-2026-00041",
+                    "period": "Сентябрь 2026",
+                    "amount": 818.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "external_id": null,
+            "last_name": "Фёдоров",
+            "first_name": "Андрей",
+            "patronymic": "Иванович",
+            "full_name": "Фёдоров Андрей Иванович",
+            "apartment": "9",
+            "apartment_no": 9,
+            "building": "1",
+            "entrance": "1",
+            "floor": 9,
+            "area": "39.50",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79091052626",
+            "email": "Fedorov.a9@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 0,
+            "tags": [],
+            "notes": null,
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-12 00:00:00",
+            "created_at": "2025-07-21 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79091052626",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79065142619",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Fedorov.a9@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.fedoro@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Н791ХА49",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "синий",
+                    "year": 2016,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Н479СК24",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "серый",
+                    "year": 2019,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Т467УК165",
+                    "brand": "Haval",
+                    "model": "Jolion",
+                    "color": "красный",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-12",
+                    "amount": 750,
+                    "method": "card",
+                    "reference": "ПЛ-F3818F",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00007",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00007",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00027-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "external_id": null,
+            "last_name": "Морозова",
+            "first_name": "Наталья",
+            "patronymic": "Петрович",
+            "full_name": "Морозова Наталья Петрович",
+            "apartment": "10",
+            "apartment_no": 10,
+            "building": "1",
+            "entrance": "2",
+            "floor": 1,
+            "area": "51.00",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "tenant",
+            "phone": "+79026889499",
+            "email": "Morozova.n10@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1193.18",
+            "last_payment_at": "2026-10-25 00:00:00",
+            "created_at": "2024-07-26 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79026889499",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74952297836",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Morozova.n10@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@morozova10",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "О097МН186",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "серый",
+                    "year": 2013,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-B09E4A70",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-25",
+                    "amount": 375,
+                    "method": "sbp",
+                    "reference": "ПЛ-8CD795",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00008",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 375,
+                    "status": "partial",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00008",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00028-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "external_id": null,
+            "last_name": "Волков",
+            "first_name": "Павел",
+            "patronymic": "Сергеевич",
+            "full_name": "Волков Павел Сергеевич",
+            "apartment": "11",
+            "apartment_no": 11,
+            "building": "1",
+            "entrance": "3",
+            "floor": 2,
+            "area": "62.50",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79023922895",
+            "email": "Volkov.p11@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-01-23 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79023922895",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79014809599",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Volkov.p11@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "М571ММ61",
+                    "brand": "Chery",
+                    "model": "Tiggo 7",
+                    "color": "серый",
+                    "year": 2011,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "К071ЕХ149",
+                    "brand": "BMW",
+                    "model": "X5",
+                    "color": "синий",
+                    "year": 2014,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00009",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00009",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00029-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "external_id": null,
+            "last_name": "Алексеева",
+            "first_name": "Екатерина",
+            "patronymic": "Андреевич",
+            "full_name": "Алексеева Екатерина Андреевич",
+            "apartment": "12",
+            "apartment_no": 12,
+            "building": "1",
+            "entrance": "4",
+            "floor": 3,
+            "area": "74.00",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79092148503",
+            "email": "Alekseeva.e12@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-09-13 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79092148503",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Alekseeva.e12@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@alekseeva12",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "М852УН134",
+                    "brand": "Nissan",
+                    "model": "Qashqai",
+                    "color": "чёрный",
+                    "year": 2025,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "С456ЕН143",
+                    "brand": "Toyota",
+                    "model": "Camry",
+                    "color": "красный",
+                    "year": 2010,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "В415УК162",
+                    "brand": "BMW",
+                    "model": "X5",
+                    "color": "серебристый",
+                    "year": 2015,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00010",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00010",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00030-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "external_id": null,
+            "last_name": "Лебедев",
+            "first_name": "Николай",
+            "patronymic": "Ивановна",
+            "full_name": "Лебедев Николай Ивановна",
+            "apartment": "13",
+            "apartment_no": 13,
+            "building": "2",
+            "entrance": "1",
+            "floor": 4,
+            "area": "85.50",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79063514435",
+            "email": "Lebedev.n13@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": "Просил напоминать об оплате за 3 дня.",
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-19 00:00:00",
+            "created_at": "2025-03-16 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79063514435",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79041869795",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74955688490",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Lebedev.n13@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.lebede@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "К001ММ121",
+                    "brand": "Haval",
+                    "model": "Jolion",
+                    "color": "красный",
+                    "year": 2015,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-BDC2D0DD",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-19",
+                    "amount": 750,
+                    "method": "transfer",
+                    "reference": "ПЛ-E86D63",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00011",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00011",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00031-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "external_id": null,
+            "last_name": "Семёнова",
+            "first_name": "Татьяна",
+            "patronymic": "Петровна",
+            "full_name": "Семёнова Татьяна Петровна",
+            "apartment": "14",
+            "apartment_no": 14,
+            "building": "2",
+            "entrance": "2",
+            "floor": 5,
+            "area": "97.00",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79082546520",
+            "email": "Semenova.t14@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-25 00:00:00",
+            "created_at": "2026-04-25 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79082546520",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Semenova.t14@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@semenova14",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "У614СС148",
+                    "brand": "Toyota",
+                    "model": "Camry",
+                    "color": "синий",
+                    "year": 2011,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "У048СВ44",
+                    "brand": "Chery",
+                    "model": "Tiggo 7",
+                    "color": "чёрный",
+                    "year": 2023,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-25",
+                    "amount": 750,
+                    "method": "card",
+                    "reference": "ПЛ-389094",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00012",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00012",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00032-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "external_id": null,
+            "last_name": "Егоров",
+            "first_name": "Виктор",
+            "patronymic": "Сергеевна",
+            "full_name": "Егоров Виктор Сергеевна",
+            "apartment": "15",
+            "apartment_no": 15,
+            "building": "2",
+            "entrance": "3",
+            "floor": 6,
+            "area": "28.00",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "tenant",
+            "phone": "+79024787652",
+            "email": "Egorov.v15@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [
+                "староста",
+                "актив"
+            ],
+            "notes": null,
+            "balance": "-1193.18",
+            "last_payment_at": "2026-10-16 00:00:00",
+            "created_at": "2025-01-14 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79024787652",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79065756448",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Egorov.v15@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Т879ВН25",
+                    "brand": "BMW",
+                    "model": "X5",
+                    "color": "серебристый",
+                    "year": 2023,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Е182УО192",
+                    "brand": "Kia",
+                    "model": "Rio",
+                    "color": "белый",
+                    "year": 2025,
+                    "type": "car",
+                    "is_active": false,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "О565РУ59",
+                    "brand": "Chery",
+                    "model": "Tiggo 7",
+                    "color": "чёрный",
+                    "year": 2024,
+                    "type": "car",
+                    "is_active": false,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-16",
+                    "amount": 375,
+                    "method": "sbp",
+                    "reference": "ПЛ-0D76B1",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00013",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 375,
+                    "status": "partial",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00013",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00033-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "external_id": null,
+            "last_name": "Павлова",
+            "first_name": "Юлия",
+            "patronymic": "Николаевич",
+            "full_name": "Павлова Юлия Николаевич",
+            "apartment": "16",
+            "apartment_no": 16,
+            "building": "2",
+            "entrance": "4",
+            "floor": 7,
+            "area": "39.50",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79041217404",
+            "email": "Pavlova.y16@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-01-23 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79041217404",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74957827416",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Pavlova.y16@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@pavlova16",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Т968СЕ53",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "синий",
+                    "year": 2017,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-04CEE80E",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00014",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00014",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00034-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "external_id": null,
+            "last_name": "Козлов",
+            "first_name": "Иван",
+            "patronymic": "Иванович",
+            "full_name": "Козлов Иван Иванович",
+            "apartment": "17",
+            "apartment_no": 17,
+            "building": "2",
+            "entrance": "1",
+            "floor": 8,
+            "area": "51.00",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79048484930",
+            "email": "Kozlov.i17@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 0,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "0.00",
+            "last_payment_at": null,
+            "created_at": "2025-10-30 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79048484930",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79076310045",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Kozlov.i17@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.kozlov@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "М748СО121",
+                    "brand": "Toyota",
+                    "model": "Camry",
+                    "color": "красный",
+                    "year": 2023,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "М767ХА170",
+                    "brand": "Renault",
+                    "model": "Duster",
+                    "color": "серебристый",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": []
+        },
+        {
+            "id": 18,
+            "external_id": null,
+            "last_name": "Степанова",
+            "first_name": "Мария",
+            "patronymic": "Петрович",
+            "full_name": "Степанова Мария Петрович",
+            "apartment": "18",
+            "apartment_no": 18,
+            "building": "2",
+            "entrance": "2",
+            "floor": 9,
+            "area": "62.50",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79061339372",
+            "email": "Stepanova.m18@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 0,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2024-10-17 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79061339372",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Stepanova.m18@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@stepanova18",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "А683МУ105",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "синий",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Х199АВ34",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "белый",
+                    "year": 2020,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Т414СС105",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "серый",
+                    "year": 2020,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00015",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00015",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00035-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "external_id": null,
+            "last_name": "Николаев",
+            "first_name": "Алексей",
+            "patronymic": "Сергеевич",
+            "full_name": "Николаев Алексей Сергеевич",
+            "apartment": "19",
+            "apartment_no": 19,
+            "building": "2",
+            "entrance": "3",
+            "floor": 1,
+            "area": "74.00",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79049666810",
+            "email": "Nikolaev.a19@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": "Просил напоминать об оплате за 3 дня.",
+            "balance": "-818.18",
+            "last_payment_at": null,
+            "created_at": "2025-04-15 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79049666810",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79041629918",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74956712240",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Nikolaev.a19@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Н134РУ19",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "серебристый",
+                    "year": 2024,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-13E0FBAB",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "INV-2026-00042",
+                    "period": "Сентябрь 2026",
+                    "amount": 818.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "external_id": null,
+            "last_name": "Орлова",
+            "first_name": "Ольга",
+            "patronymic": "Андреевич",
+            "full_name": "Орлова Ольга Андреевич",
+            "apartment": "20",
+            "apartment_no": 20,
+            "building": "2",
+            "entrance": "4",
+            "floor": 2,
+            "area": "85.50",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "tenant",
+            "phone": "+79078834953",
+            "email": "Orlova.o20@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-25 00:00:00",
+            "created_at": "2026-05-30 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79078834953",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Orlova.o20@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@orlova20",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "С629ТР23",
+                    "brand": "Chery",
+                    "model": "Tiggo 7",
+                    "color": "серый",
+                    "year": 2010,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "С106ЕТ93",
+                    "brand": "Volkswagen",
+                    "model": "Polo",
+                    "color": "серебристый",
+                    "year": 2021,
+                    "type": "car",
+                    "is_active": false,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-25",
+                    "amount": 750,
+                    "method": "transfer",
+                    "reference": "ПЛ-317E6F",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00016",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00016",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00036-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "external_id": null,
+            "last_name": "Андреев",
+            "first_name": "Дмитрий",
+            "patronymic": "Ивановна",
+            "full_name": "Андреев Дмитрий Ивановна",
+            "apartment": "21",
+            "apartment_no": 21,
+            "building": "2",
+            "entrance": "1",
+            "floor": 3,
+            "area": "97.00",
+            "persons": 1,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79072541424",
+            "email": "Andreev.d21@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-818.18",
+            "last_payment_at": "2026-10-09 00:00:00",
+            "created_at": "2026-04-15 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79072541424",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79032618485",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Andreev.d21@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "work.andree@company.example",
+                    "label": "рабочая",
+                    "is_primary": false,
+                    "notify": false
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "А362СТ135",
+                    "brand": "Kia",
+                    "model": "Rio",
+                    "color": "белый",
+                    "year": 2024,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Х388РН84",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "белый",
+                    "year": 2015,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "М410ОХ15",
+                    "brand": "Nissan",
+                    "model": "Qashqai",
+                    "color": "серый",
+                    "year": 2021,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-09",
+                    "amount": 750,
+                    "method": "card",
+                    "reference": "ПЛ-DA0590",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00017",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 750,
+                    "status": "paid",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00017",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00037-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 22,
+            "external_id": null,
+            "last_name": "Макарова",
+            "first_name": "Анна",
+            "patronymic": "Петровна",
+            "full_name": "Макарова Анна Петровна",
+            "apartment": "22",
+            "apartment_no": 22,
+            "building": "2",
+            "entrance": "2",
+            "floor": 4,
+            "area": "28.00",
+            "persons": 2,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79075481733",
+            "email": "Makarova.a22@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [
+                "староста",
+                "актив"
+            ],
+            "notes": null,
+            "balance": "-1193.18",
+            "last_payment_at": "2026-10-23 00:00:00",
+            "created_at": "2024-10-10 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79075481733",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+74955847255",
+                    "label": "домашний",
+                    "is_primary": false,
+                    "notify": false
+                },
+                {
+                    "type": "email",
+                    "value": "Makarova.a22@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@makarova22",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Х481МН55",
+                    "brand": "Hyundai",
+                    "model": "Solaris",
+                    "color": "серый",
+                    "year": 2025,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": "RFID-E888AB48",
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [
+                {
+                    "date": "2026-10-23",
+                    "amount": 375,
+                    "method": "sbp",
+                    "reference": "ПЛ-8692B0",
+                    "note": "Демо-оплата"
+                }
+            ],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00018",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 375,
+                    "status": "partial",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00018",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00038-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "external_id": null,
+            "last_name": "Захаров",
+            "first_name": "Сергей",
+            "patronymic": "Сергеевна",
+            "full_name": "Захаров Сергей Сергеевна",
+            "apartment": "23",
+            "apartment_no": 23,
+            "building": "2",
+            "entrance": "3",
+            "floor": 5,
+            "area": "39.50",
+            "persons": 3,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79072570629",
+            "email": "Zaharov.s23@example.com",
+            "access_granted": 0,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-07-26 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79072570629",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "phone",
+                    "value": "+79092122208",
+                    "label": "второй",
+                    "is_primary": false,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Zaharov.s23@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Х055МА145",
+                    "brand": "BMW",
+                    "model": "X5",
+                    "color": "серый",
+                    "year": 2020,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Х627АН65",
+                    "brand": "Geely",
+                    "model": "Coolray",
+                    "color": "серебристый",
+                    "year": 2020,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00019",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00019",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00039-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "external_id": null,
+            "last_name": "Зайцева",
+            "first_name": "Елена",
+            "patronymic": "Николаевич",
+            "full_name": "Зайцева Елена Николаевич",
+            "apartment": "24",
+            "apartment_no": 24,
+            "building": "2",
+            "entrance": "4",
+            "floor": 6,
+            "area": "51.00",
+            "persons": 4,
+            "share": "1.0000",
+            "role_in_home": "owner",
+            "phone": "+79098009940",
+            "email": "Zayceva.e24@example.com",
+            "access_granted": 1,
+            "is_active": 1,
+            "is_billed": 1,
+            "allow_guest_pass": 1,
+            "notify_enabled": 1,
+            "tags": [],
+            "notes": null,
+            "balance": "-1568.18",
+            "last_payment_at": null,
+            "created_at": "2025-11-11 19:54:30",
+            "meta": [],
+            "contacts": [
+                {
+                    "type": "phone",
+                    "value": "+79098009940",
+                    "label": "мобильный",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "email",
+                    "value": "Zayceva.e24@example.com",
+                    "label": "основная",
+                    "is_primary": true,
+                    "notify": true
+                },
+                {
+                    "type": "telegram",
+                    "value": "@zayceva24",
+                    "label": "telegram",
+                    "is_primary": true,
+                    "notify": true
+                }
+            ],
+            "cars": [
+                {
+                    "plate": "Х753АУ159",
+                    "brand": "Skoda",
+                    "model": "Octavia",
+                    "color": "чёрный",
+                    "year": 2024,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "Н117КУ199",
+                    "brand": "Volkswagen",
+                    "model": "Polo",
+                    "color": "синий",
+                    "year": 2012,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                },
+                {
+                    "plate": "М390ХЕ183",
+                    "brand": "Volkswagen",
+                    "model": "Polo",
+                    "color": "чёрный",
+                    "year": 2014,
+                    "type": "car",
+                    "is_active": true,
+                    "rfid_tag": null,
+                    "valid_from": null,
+                    "valid_until": null,
+                    "notes": null
+                }
+            ],
+            "payments": [],
+            "invoices": [
+                {
+                    "number": "СЧ-2026-00020",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-14",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00020",
+                    "period": "Сентябрь 2026",
+                    "amount": 750,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "regular"
+                },
+                {
+                    "number": "INV-2026-00040-Д",
+                    "period": "Сентябрь 2026",
+                    "amount": 68.18,
+                    "paid": 0,
+                    "status": "pending",
+                    "due_date": "2026-10-23",
+                    "kind": "adjustment"
+                }
+            ]
+        }
+    ]
+}

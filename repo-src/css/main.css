@@ -1,0 +1,173 @@
+
+        :root {
+            --background-color: #f4f4f4;
+            --text-color: #333;
+            --button-bg: #007BFF;
+            --button-hover: #0056b3;
+            --modal-bg: #fff;
+            --modal-text: #333;
+            --status-bg: #e0e0e0;
+            --status-text: #333;
+            --primary-color: #007BFF;
+        }
+
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #333;
+                --text-color: #f4f4f4;
+                --button-bg: #0056b3;
+                --button-hover: #003d82;
+                --modal-bg: #444;
+                --modal-text: #f4f4f4;
+                --status-bg: #1a1d28;
+                --status-text: #f4f4f4;
+                --primary-color: #0056b3;
+            }
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--text-color);
+            color: var(--background-color);
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #status-panel, #controls, #camera {
+            margin-bottom: 20px;
+        }
+
+        #status {
+            padding: 0.8rem 1.2rem;
+            border-radius: 5px;
+            background: var(--status-bg);
+            border: 1px solid #3d445f;
+            transition: all 0.3s ease;
+            font-family: monospace;
+            color: var(--status-text);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        #camera-container {
+            position: relative;
+        }
+
+        #camera-image {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #camera-container.loading::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 2vmin;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            color: var(--modal-text);
+            border-radius: 12px;
+            width: 95vw;
+            height: 70vh;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4vmin;
+            box-sizing: border-box;
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vmin;
+            height: 70%;
+            min-height: 300px;
+        }
+
+        .modal-buttons button {
+            width: 100%;
+            height: 100%;
+            font-size: clamp(24px, 6vw, 48px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            word-break: break-word;
+            padding: 2vmin;
+            box-sizing: border-box;
+            line-height: 1.2;
+            border: none;
+            background-color: var(--button-bg);
+            color: white;
+        }
+
+        .modal-buttons button:hover {
+            background-color: var(--button-hover);
+        }
+
+        #modalMessage {
+            font-size: clamp(20px, 4vw, 32px);
+            text-align: center;
+            margin: 2vmin 0;
+            overflow: auto;
+            max-height: 20vh;
+        }

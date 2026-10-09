@@ -1,0 +1,13 @@
+# BAS-IP Gate Manager — nothing here should ever be indexed.
+User-agent: *
+Disallow: /
+
+# Explicitly keep the sensitive paths out of any crawler that ignores the above.
+Disallow: /admin
+Disallow: /api
+Disallow: /install
+Disallow: /login
+Disallow: /cabinet
+Disallow: /guest
+Disallow: /storage
+Disallow: /config
