@@ -251,7 +251,8 @@ return [
             'csp'                => true,
             'csp_report_only'    => false,
             'csp_extra'          => [],      // ['img-src' => 'https:']
-            'frame_ancestors'    => "'none'",
+            'frame_ancestors'    => "'self'",   // CSP: who may frame the app
+            'frame_options'      => 'SAMEORIGIN', // legacy fallback for old browsers
             'referrer_policy'    => 'strict-origin-when-cross-origin',
             'permissions_policy' => 'camera=(), microphone=(), geolocation=(), payment=()',
             'hsts_max_age'       => 31536000,

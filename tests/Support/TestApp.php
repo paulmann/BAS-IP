@@ -228,13 +228,19 @@ final class TestApp
     {
         $app = self::app();
 
+        // Deterministic auth state for every request: either exactly `$as` is
+        // signed in, or nobody is. Without this, session data from a previous
+        // test (or a real login POST) would leak into "anonymous" requests.
+        $session = self::container()->get(\BasIp\Core\Session::class);
+        $session->start();
         if ($as !== null) {
-            // Authenticate without touching PHP sessions: put the user id in
-            // the session store the guard reads from.
-            $session = self::container()->get(\BasIp\Core\Session::class);
-            $session->start();
             $session->set('user_id', $as->id);
             $session->set('user_role', $as->role);
+        } else {
+            $session->forget('user_id');
+            $session->forget('user_role');
+            $session->forget('pending_2fa_user_id');
+            $session->forget('login_at');
         }
 
         $request = Request::fake($method, $path, $post, [

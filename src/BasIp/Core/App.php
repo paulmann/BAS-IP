@@ -132,6 +132,19 @@ final class App
         // Make the container aware of the current request as early as possible.
         $this->container->set(Request::class, $request);
 
+        // Reset request-scoped state so handle() is safely re-entrant: the
+        // test-suite, queue workers and any future long-running process reuse
+        // one App instance for many requests and must never see a stale
+        // principal, route or CSP nonce.
+        foreach (['auth.user', 'auth.guard', 'auth.principal', 'api.principal', 'cspNonce', 'route'] as $scoped) {
+            $this->container->forget($scoped);
+        }
+        if ($this->container->hasInstance(\BasIp\Auth\Guard::class)) {
+            /** @var \BasIp\Auth\Guard $guard */
+            $guard = $this->container->get(\BasIp\Auth\Guard::class);
+            $guard->reset();
+        }
+
         $session = $this->container->has(Session::class) ? $this->container->get(Session::class) : null;
         if ($session instanceof Session) {
             $session->start();
@@ -247,8 +260,9 @@ final class App
 
     private function finish(Request $request, Response $response): void
     {
-        $response->header('X-Request-Id', $request->requestId(), false);
-        $response->header('X-Frame-Options', 'SAMEORIGIN', false);
+        // X-Request-Id / X-Frame-Options / nosniff are applied by the
+        // SecurityHeaders middleware (and by renderThrowable for error pages),
+        // so only debug headers are added here.
 
         if ($this->config()->bool('app.debug')) {
             $response->header('X-Debug-Time-Ms', (string) round((microtime(true) - $this->startedAt) * 1000, 1), false);
@@ -326,7 +340,7 @@ final class App
                 $payload['trace']     = array_slice(explode("\n", $e->getTraceAsString()), 0, 20);
             }
 
-            return Response::json($payload, $status)->withHeaders($headers);
+            return $this->applyBaselineHeaders(Response::json($payload, $status)->withHeaders($headers), $request);
         }
 
         try {
@@ -346,13 +360,13 @@ final class App
                 'cspNonce' => $this->container->has('cspNonce') ? $this->container->get('cspNonce') : '',
             ]);
 
-            return Response::html($view->render($template), $status)->withHeaders($headers);
+            return $this->applyBaselineHeaders(Response::html($view->render($template), $status)->withHeaders($headers), $request);
         } catch (Throwable) {
             $debug = $this->config()->bool('app.debug')
                 ? '<pre style="white-space:pre-wrap">' . htmlspecialchars($e->getMessage() . "\n" . $e->getTraceAsString(), ENT_QUOTES) . '</pre>'
                 : '';
 
-            return Response::html(
+            return $this->applyBaselineHeaders(Response::html(
                 '<!doctype html><html lang="ru"><meta charset="utf-8">'
                 . '<title>' . $status . '</title>'
                 . '<body style="font-family:system-ui,sans-serif;padding:3rem;text-align:center">'
@@ -360,8 +374,28 @@ final class App
                 . '<p>' . htmlspecialchars($status >= 500 ? 'Внутренняя ошибка сервера' : $e->getMessage(), ENT_QUOTES) . '</p>'
                 . $debug . '</body></html>',
                 $status
-            );
+            ), $request);
         }
+    }
+
+    /**
+     * Error responses bypass the middleware pipeline, so the baseline security
+     * headers are applied here — every response leaving the kernel carries
+     * them regardless of the path it took.
+     */
+    private function applyBaselineHeaders(Response $response, Request $request): Response
+    {
+        $hasCacheControl = isset($response->headers()['Cache-Control']);
+
+        $response->header('X-Request-Id', $request->requestId());
+        $response->header('X-Frame-Options', $this->config()->string('security.headers.frame_options', 'SAMEORIGIN'));
+        $response->header('X-Content-Type-Options', 'nosniff');
+        $response->header('Referrer-Policy', $this->config()->string('security.headers.referrer_policy', 'strict-origin-when-cross-origin'));
+        if (!$hasCacheControl) {
+            $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        }
+
+        return $response;
     }
 
     public function logException(Throwable $e): void

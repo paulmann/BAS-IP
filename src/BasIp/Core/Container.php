@@ -68,6 +68,22 @@ final class Container
         return isset($this->instances[$id]) || isset($this->bindings[$id]);
     }
 
+    /** True when a shared instance was already built (regardless of bindings). */
+    public function hasInstance(string $id): bool
+    {
+        return array_key_exists($id, $this->instances);
+    }
+
+    /**
+     * Drop a built instance, keeping the binding. The next {@see get()} will
+     * re-run the factory. Used to reset request-scoped services so that
+     * {@see App::handle()} stays re-entrant (tests, queue workers, CLI daemons).
+     */
+    public function forget(string $id): void
+    {
+        unset($this->instances[$id]);
+    }
+
     public function extend(string $id, callable $extender): void
     {
         $this->extenders[$id][] = $extender;

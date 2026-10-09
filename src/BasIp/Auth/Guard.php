@@ -57,6 +57,18 @@ final class Guard
         return !$this->check();
     }
 
+    /**
+     * Forget the memoised principal so the next {@see user()} re-reads the
+     * session/cookie. Called by the kernel at the start of every request —
+     * this keeps {@see App::handle()} re-entrant (tests, queue workers).
+     */
+    public function reset(): void
+    {
+        $this->user     = null;
+        $this->resolved = false;
+        $this->via      = null;
+    }
+
     public function via(): ?string
     {
         $this->resolve();

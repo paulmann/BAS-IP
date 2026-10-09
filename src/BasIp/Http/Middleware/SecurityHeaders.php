@@ -24,6 +24,27 @@ final class SecurityHeaders extends AbstractMiddleware
 
         $response = $next($request);
 
+        /* ── baseline headers — always on, independent of the CSP toggle ── */
+        $response->header('X-Request-Id', $request->requestId());
+        $response->header('X-Frame-Options', $config->string('security.headers.frame_options', 'SAMEORIGIN'));
+        if ($config->bool('security.headers.x_content_type_options', true)) {
+            $response->header('X-Content-Type-Options', 'nosniff');
+        }
+
+        // Dynamic HTML/JSON is never cached unless the controller opted in
+        // (manifest, camera snapshots, … set their own Cache-Control).
+        $existing = $response->headers();
+        if (!isset($existing['Cache-Control'])) {
+            $contentType = (string) ($existing['Content-Type'] ?? '');
+            if ($contentType === ''
+                || str_contains($contentType, 'text/html')
+                || str_contains($contentType, 'application/json')
+                || str_contains($contentType, 'text/plain')
+                || str_contains($contentType, 'text/csv')) {
+                $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private');
+            }
+        }
+
         if (!$config->bool('security.headers.csp', true)) {
             return $response;
         }
@@ -75,7 +96,6 @@ final class SecurityHeaders extends AbstractMiddleware
         $header = $config->bool('security.headers.csp_report_only') ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy';
         $response->header($header, $csp);
 
-        $response->header('X-Content-Type-Options', 'nosniff');
         $response->header('Referrer-Policy', $config->string('security.headers.referrer_policy', 'strict-origin-when-cross-origin'));
         $response->header('Permissions-Policy', $config->string('security.headers.permissions_policy', 'camera=(), microphone=(), geolocation=()'));
         $response->header('Cross-Origin-Opener-Policy', 'same-origin');

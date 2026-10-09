@@ -35,7 +35,14 @@ final class VerifyCsrf extends AbstractMiddleware
         $route = $this->container->has('route') ? (array) $this->container->get('route') : [];
         $name  = (string) ($route['name'] ?? '');
         $exempt = (array) $config->get('security.csrf.except', []);
-        $exempt = array_merge($exempt, (array) ($route['options']['csrf_except'] ?? []));
+
+        // `csrf_except => true` exempts the route outright (signed guest links,
+        // device webhooks); `csrf_except => 'name*'` adds wildcard patterns.
+        $exceptOption = $route['options']['csrf_except'] ?? false;
+        if ($exceptOption === true) {
+            return $next($request);
+        }
+        $exempt = array_merge($exempt, array_map('strval', (array) $exceptOption));
 
         if ($name !== '' && (in_array($name, $exempt, true) || $this->matchesWildcard($name, $exempt))) {
             return $next($request);
@@ -72,10 +79,11 @@ final class VerifyCsrf extends AbstractMiddleware
         return Response::redirect($request->url($request->referer() !== '' ? (string) parse_url($request->referer(), PHP_URL_PATH) : '/'));
     }
 
-    /** @param array<int, string> $patterns */
+    /** @param array<int, mixed> $patterns */
     private function matchesWildcard(string $name, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
+            $pattern = (string) $pattern;
             if ($pattern === $name) {
                 return true;
             }

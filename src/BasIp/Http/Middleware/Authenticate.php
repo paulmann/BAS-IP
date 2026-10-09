@@ -83,12 +83,15 @@ final class Authenticate extends AbstractMiddleware
                 }
             }
 
-            if ($request->expectsJson()) {
-                return $this->deny($request, 401, 'Требуется авторизация.');
-            }
+            // Session routes serve browsers: always redirect to the login page
+            // and remember where the user was heading. XHR callers follow the
+            // redirect and detect the login form; only `auth => 'api'` routes
+            // answer with a bare 401.
             $session = $this->session();
             $session?->set('intended_url', $request->fullUrl());
-            $session?->flash('error', 'Войдите, чтобы продолжить.');
+            if (!$request->expectsJson()) {
+                $session?->flash('error', 'Войдите, чтобы продолжить.');
+            }
 
             return Response::redirect($request->url('/login'));
         }

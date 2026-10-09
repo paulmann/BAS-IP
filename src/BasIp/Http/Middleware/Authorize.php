@@ -19,7 +19,7 @@ use Closure;
  *   'permission'  => 'residents.edit'       — require a single permission
  *   'permissions' => ['a','b']              — require ALL (use 'any' for OR)
  *   'any'         => ['a','b']              — require ANY
- *   'scopes'      => ['gate.open']          — API token scopes
+ *   'scopes'      => ['gate.open','*']      — API-token scopes, ANY of them
  *
  * Residents are additionally confined to their own records: controllers must
  * call `Guard::requirePermission()` / compare `resident_id` for row-level
@@ -44,16 +44,18 @@ final class Authorize extends AbstractMiddleware
 
         $principal = $this->container->has('auth.principal') ? $this->container->get('auth.principal') : null;
 
-        // API token principal → scope check.
+        // API token principal → scope check. Route scopes are alternatives:
+        // holding ANY of them (or `*`) is enough, which lets a read-only token
+        // reach endpoints that also accept a broader write scope.
         if ($principal instanceof ApiPrincipal) {
             if ($scopes !== []) {
                 foreach ($scopes as $scope) {
-                    if (!$principal->can((string) $scope)) {
-                        return $this->forbidden($request, 'Токену не хватает области доступа: ' . $scope);
+                    if ($principal->can((string) $scope)) {
+                        return $next($request);
                     }
                 }
 
-                return $next($request);
+                return $this->forbidden($request, 'Токену не хватает области доступа: ' . implode(' или ', array_map('strval', $scopes)));
             }
             if ($roles !== [] && !in_array($principal->role(), $roles, true)) {
                 return $this->forbidden($request, 'Недостаточно прав для этого раздела.');
