@@ -268,7 +268,7 @@ check('admin login', (bool) ($loginResult['ok'] ?? false), (string) ($loginResul
 
 // Authenticated routes (session-based)
 $authedRoutes = [
-    '/dashboard', '/panel', '/panel/status', '/profile', '/profile/sessions', '/profile/2fa',
+    '/dashboard', '/panel', '/panel/status', '/panel/cameras', '/remote', '/profile', '/profile/sessions', '/profile/2fa',
     '/help', '/help/quick-start', '/help/billing-charges', '/help/guest-access', '/help/api',
     '/help/nonexistent-section',   // 404 expected
     '/admin', '/admin/residents', '/admin/residents/create', '/admin/residents/1', '/admin/residents/1/edit',

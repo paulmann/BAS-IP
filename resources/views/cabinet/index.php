@@ -76,6 +76,11 @@ $overpay = (float) ($statement['overpay'] ?? 0);
           <span class="text-xs font-normal opacity-80" data-gate-cooldown-label></span>
         </button>
 
+        <a class="btn btn-outline btn-block" href="<?= $this->e($this->url('/remote')) ?>">
+          <?= $this->icon('maximize', 'h-4 w-4') ?>
+          Полноэкранный пульт с камерой
+        </a>
+
         <?php if (!$canOpen): ?>
           <div class="alert alert-warning">
             <?= $this->icon('alert-triangle', 'h-4 w-4') ?>

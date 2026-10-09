@@ -264,6 +264,15 @@ $userForm = function (?array $row, string $idSuffix) use ($roles, $residents, $c
       </div>
 
       <div class="field">
+        <label class="label" for="u-phone-<?= $idSuffix ?>">Телефон</label>
+        <input class="input input-mono" id="u-phone-<?= $idSuffix ?>" name="phone" type="tel" maxlength="32"
+               value="<?= $this->e((string) ($row['phone'] ?? '')) ?>" placeholder="+7 900 000-00-00" autocomplete="off">
+        <p class="text-xs text-muted-foreground">
+          По телефону можно входить: номер приводится к E.164, вход работает в любом написании.
+        </p>
+      </div>
+
+      <div class="field">
         <label class="label" for="u-resident-<?= $idSuffix ?>">Привязать к жителю</label>
         <select class="select" id="u-resident-<?= $idSuffix ?>" name="resident_id">
           <option value="">— не привязывать —</option>

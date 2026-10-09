@@ -73,6 +73,12 @@ final class SecurityHeaders extends AbstractMiddleware
             $directives['img-src'][] = $request->scheme . '://' . $deviceHost . ':*';
             $directives['media-src'][] = $request->scheme . '://' . $deviceHost . ':*';
         }
+        // Direct (mode=mjpeg) streams of per-device cameras live on their own
+        // hosts — allow exactly those origins, nothing more.
+        foreach ($this->cameraStreamOrigins() as $origin) {
+            $directives['img-src'][] = $origin;
+            $directives['media-src'][] = $origin;
+        }
         foreach ((array) $config->get('security.headers.csp_extra', []) as $name => $extra) {
             $name = (string) $name;
             $directives[$name] = array_unique(array_merge($directives[$name] ?? [], (array) $extra));
@@ -112,5 +118,57 @@ final class SecurityHeaders extends AbstractMiddleware
         }
 
         return $response;
+    }
+
+    /**
+     * Origins (scheme://host[:port]) of cameras configured for direct mjpeg
+     * playback — collected from the devices table and cached briefly so the
+     * CSP costs one query per two minutes, not per request.
+     *
+     * @return array<int, string>
+     */
+    private function cameraStreamOrigins(): array
+    {
+        try {
+            $cache = $this->container->has(\BasIp\Core\Cache::class) ? $this->container->get(\BasIp\Core\Cache::class) : null;
+            if ($cache !== null) {
+                $cached = $cache->get('csp.camera_origins');
+                if (is_array($cached)) {
+                    return array_values(array_map('strval', $cached));
+                }
+            }
+
+            $origins = [];
+            if ($this->container->has(\BasIp\Db\Database::class)) {
+                /** @var \BasIp\Db\Database $db */
+                $db = $this->container->get(\BasIp\Db\Database::class);
+                foreach ($db->table('devices')->where('is_active', '=', 1)->get() as $row) {
+                    $options = json_decode((string) ($row['options'] ?? ''), true);
+                    $camera = is_array($options) ? (array) ($options['camera'] ?? []) : [];
+                    if (($camera['mode'] ?? '') === 'mjpeg' && isset($camera['stream_url']) && $camera['stream_url'] !== '') {
+                        $origin = self::originOf((string) $camera['stream_url']);
+                        if ($origin !== null) {
+                            $origins[] = $origin;
+                        }
+                    }
+                }
+            }
+            $origins = array_values(array_unique($origins));
+            $cache?->put('csp.camera_origins', $origins, 120);
+
+            return $origins;
+        } catch (Throwable) {
+            return [];      // not installed yet / DB down — CSP must never break a response
+        }
+    }
+
+    private static function originOf(string $url): ?string
+    {
+        $parts = parse_url($url);
+        if (!is_array($parts) || !isset($parts['scheme'], $parts['host']) || !in_array(strtolower((string) $parts['scheme']), ['http', 'https'], true)) {
+            return null;
+        }
+
+        return strtolower($parts['scheme']) . '://' . $parts['host'] . (isset($parts['port']) ? ':' . $parts['port'] : '');
     }
 }

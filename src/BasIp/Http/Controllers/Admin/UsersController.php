@@ -129,7 +129,7 @@ final class UsersController extends Controller
     {
         $actor = $this->requirePermission('users.edit');
         $result = $this->users()->update((int) $id, $request->only([
-            'full_name', 'email', 'role', 'resident_id', 'is_active',
+            'full_name', 'email', 'phone', 'role', 'resident_id', 'is_active',
             'must_change_password', 'locale', 'password', 'keep_resident_link',
         ]), $actor, $request);
 

@@ -327,6 +327,7 @@ abstract class Controller
 
         $items = [
             ['section' => 'Обзор'],
+            ['title' => 'Пульт шлагбаума', 'path' => '/remote', 'icon' => 'door-open', 'permission' => 'gate.open'],
             ['title' => 'Панель управления', 'path' => '/panel', 'icon' => 'gauge', 'permission' => 'gate.open'],
             ['title' => 'Личный кабинет', 'path' => '/cabinet', 'icon' => 'home', 'role' => 'resident'],
         ];

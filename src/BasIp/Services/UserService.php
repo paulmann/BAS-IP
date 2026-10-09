@@ -106,6 +106,15 @@ final class UserService
             }
             $update['email'] = $email !== '' ? mb_strtolower($email) : null;
         }
+        if (array_key_exists('phone', $input)) {
+            $phone = trim((string) $input['phone']);
+            if ($phone !== '') {
+                $normalized = \BasIp\Support\Phone::normalize($phone);
+                $update['phone'] = mb_substr($normalized !== '' ? $normalized : $phone, 0, 32);
+            } else {
+                $update['phone'] = null;
+            }
+        }
         if (array_key_exists('role', $input) && Permissions::isValidRole((string) $input['role'])) {
             if ((string) $input['role'] !== 'resident' && (string) $before['role'] === 'resident' && empty($input['keep_resident_link'])) {
                 $update['resident_id'] = null;
@@ -249,10 +258,11 @@ final class UserService
             return ['ok' => false, 'error' => 'Житель не найден.'];
         }
 
-        $login ??= $this->suggestLogin((string) ($resident['email'] ?? ''), (string) ($resident['apartment'] ?? ''), (string) ($resident['full_name'] ?? ''));
+        $login ??= $this->suggestLogin((string) ($resident['phone'] ?? ''), (string) ($resident['email'] ?? ''), (string) ($resident['apartment'] ?? ''), (string) ($resident['full_name'] ?? ''));
         $result = $this->auth->createAccount([
             'login' => $login,
             'email' => $resident['email'] ?? null,
+            'phone' => $resident['phone'] ?? null,
             'full_name' => $resident['full_name'] ?? $login,
             'role' => 'resident',
             'resident_id' => $residentId,
@@ -270,8 +280,14 @@ final class UserService
         return ['ok' => true, 'id' => (int) $result['id'], 'login' => $login, 'password' => (string) ($result['password'] ?? ''), 'existed' => false];
     }
 
-    private function suggestLogin(string $email, string $apartment, string $fullName): string
+    private function suggestLogin(string $phone, string $email, string $apartment, string $fullName): string
     {
+        // Phone first: residents sign in with the number they already know.
+        $digits = ltrim(\BasIp\Support\Phone::normalize($phone), '+');
+        if (strlen($digits) >= 10 && $this->guard->findByLogin($digits) === null
+            && $this->db->table('users')->where('login', '=', $digits)->whereNull('deleted_at')->count() === 0) {
+            return $digits;
+        }
         if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $email;
         }

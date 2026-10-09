@@ -22,7 +22,7 @@ declare(strict_types=1);
     <span class="avatar avatar-xl shrink-0"><?= $this->e($account->initials()) ?></span>
     <div class="min-w-0">
       <h2 class="page-title truncate"><?= $this->e($account->displayName()) ?></h2>
-      <p class="page-desc">@<?= $this->e($account->login) ?><?= $account->email !== null ? ' · ' . $this->e($account->email) : '' ?> · <?= $this->e($account->roleLabel()) ?></p>
+      <p class="page-desc">@<?= $this->e($account->login) ?><?= $account->email !== null ? ' · ' . $this->e($account->email) : '' ?><?= ($account->phone ?? null) !== null ? ' · ' . $this->e((string) $account->phone) : '' ?> · <?= $this->e($account->roleLabel()) ?></p>
       <div class="mt-2 flex flex-wrap gap-1.5">
         <?= $account->isActive ? '<span class="badge badge-soft-success">активен</span>' : '<span class="badge badge-muted">отключён</span>' ?>
         <?= $account->totpEnabled ? '<span class="badge badge-soft-success">2FA</span>' : '<span class="badge badge-soft-warning">без 2FA</span>' ?>

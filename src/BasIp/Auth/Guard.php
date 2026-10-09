@@ -222,6 +222,21 @@ final class Guard
             })
             ->first();
 
+        if ($row === null && preg_match('/^[+0-9()\-\s]{7,}$/', $login) === 1) {
+            // Phone-number login: «8 999 123-45-67», «+79991234567» and
+            // «79991234567» all resolve to the same account.
+            $e164   = \BasIp\Support\Phone::normalize($login);
+            $digits = ltrim($e164, '+');
+            if ($digits !== '') {
+                $row = $this->db->table('users')
+                    ->whereNull('deleted_at')
+                    ->where(static function ($q) use ($e164, $digits): void {
+                        $q->where('phone', '=', $e164)->orWhere('login', '=', $digits);
+                    })
+                    ->first();
+            }
+        }
+
         return $row === null ? null : User::fromRow($row);
     }
 

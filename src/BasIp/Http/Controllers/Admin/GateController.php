@@ -292,6 +292,33 @@ final class GateController extends Controller
     /** @return array<string, mixed> */
     private function devicePayload(Request $request): array
     {
+        $options = $this->parseOptions((string) $request->input('options', ''));
+
+        // The structured «Camera» section of the form wins over anything the
+        // raw options textarea had for `camera.*` — the admin edits it with
+        // normal fields, not JSON.
+        $cameraMode = $request->str('camera_mode', '');
+        if ($cameraMode !== '') {
+            $camera = [
+                'enabled'   => $request->bool('camera_enabled', false) && $cameraMode !== 'off',
+                'mode'      => in_array($cameraMode, ['off', 'snapshot', 'proxy', 'mjpeg'], true) ? $cameraMode : 'snapshot',
+                'cache_ttl' => max(1, min(60, $request->int('camera_cache_ttl', 2))),
+                'width'     => max(160, min(3840, $request->int('camera_width', 1280))),
+            ];
+            $endpoint = trim($request->str('camera_endpoint', ''));
+            if ($endpoint !== '') {
+                $camera['endpoint'] = $endpoint;
+            }
+            $streamUrl = trim($request->str('camera_stream_url', ''));
+            if ($streamUrl !== '') {
+                if (!preg_match('~^https?://[^\s]+$~i', $streamUrl)) {
+                    throw new \BasIp\Http\RoutingException('Адрес видеопотока должен начинаться с http:// или https://', 422);
+                }
+                $camera['stream_url'] = $streamUrl;
+            }
+            $options['camera'] = array_merge((array) ($options['camera'] ?? []), $camera);
+        }
+
         return [
             'name'     => $request->str('name', 'Шлагбаум'),
             'slug'     => $request->str('slug'),
@@ -304,7 +331,7 @@ final class GateController extends Controller
             'is_active' => $request->bool('is_active', true),
             'is_default' => $request->bool('is_default'),
             'notes'    => $request->str('notes'),
-            'options'  => $this->parseOptions((string) $request->input('options', '')),
+            'options'  => $options,
         ];
     }
 

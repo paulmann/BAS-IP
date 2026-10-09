@@ -85,6 +85,11 @@ return static function (Router $r, Container $c): void {
         $r->post('/panel/close', [PanelController::class, 'close'], ['name' => 'panel.close', 'auth' => true, 'throttle' => 'gate_open', 'permission' => 'gate.close']);
         $r->get('/panel/status', [PanelController::class, 'status'], ['name' => 'panel.status', 'auth' => true, 'throttle' => 'status_poll']);
         $r->get('/panel/snapshot', [PanelController::class, 'snapshot'], ['name' => 'panel.snapshot', 'auth' => true, 'throttle' => '120,60']);
+        $r->get('/panel/cameras', [PanelController::class, 'cameras'], ['name' => 'panel.cameras', 'auth' => true, 'any' => ['gate.open'], 'throttle' => '120,60']);
+        $r->get('/panel/camera/stream', [PanelController::class, 'cameraStream'], ['name' => 'panel.camera.stream', 'auth' => true, 'any' => ['gate.open'], 'throttle' => '240,300']);
+
+        // The resident «gate remote»: full-screen giant button + live cameras.
+        $r->get('/remote', [PanelController::class, 'remote'], ['name' => 'remote', 'auth' => true, 'any' => ['gate.open']]);
 
         $r->get('/cabinet', [CabinetController::class, 'index'], ['name' => 'cabinet', 'auth' => true, 'roles' => ['resident', 'admin', 'operator']]);
         $r->get('/cabinet/guest', [CabinetController::class, 'guestList'], ['name' => 'cabinet.guest', 'auth' => true]);

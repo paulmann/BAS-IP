@@ -26,13 +26,13 @@ $errors = $this->shared['errors'] ?? [];
   </div>
 
   <div class="field">
-    <label class="label" for="login">Логин или e-mail</label>
+    <label class="label" for="login">Логин, e-mail или телефон</label>
     <div class="relative">
       <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground"><?= $this->icon('user', 'h-4 w-4') ?></span>
       <input class="input pl-9" id="login" name="login" type="text" required autofocus
              autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="text"
              value="<?= $this->e($this->old('login', '')) ?>"
-             placeholder="admin" aria-describedby="login-hint">
+             placeholder="admin или +7 999 123-45-67" aria-describedby="login-hint">
     </div>
     <p class="text-xs text-muted-foreground" id="login-hint">Регистр не важен. Можно войти по e-mail.</p>
     <?php if (isset($errors['login'])): ?><p class="form-message"><?= $this->e($errors['login'][0]) ?></p><?php endif ?>

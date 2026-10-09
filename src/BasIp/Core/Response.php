@@ -22,6 +22,8 @@ final class Response
     private ?string $file = null;
     private ?string $fileDisposition = null;
     private ?string $fileMime = null;
+    /** @var \Closure|null long-lived writer (MJPEG proxy): called by emit() after headers */
+    private ?\Closure $streamWriter = null;
 
     public function __construct(string $body = '', int $status = 200, array $headers = [])
     {
@@ -74,6 +76,21 @@ final class Response
     public static function noContent(int $status = 204): self
     {
         return new self('', $status);
+    }
+
+    /**
+     * Streaming response: headers are emitted normally, then `$writer` takes
+     * over `echo`/`flush` (proxied MJPEG video, long-polling, …). The writer
+     * must handle client disconnects and time limits itself.
+     *
+     * @param array<string, string> $headers
+     */
+    public static function streamed(int $status, array $headers, \Closure $writer): self
+    {
+        $response = new self('', $status, $headers);
+        $response->streamWriter = $writer;
+
+        return $response;
     }
 
     public static function file(string $path, ?string $name = null, bool $inline = false, ?string $mime = null): self
@@ -220,6 +237,17 @@ final class Response
 
         if ($this->file !== null) {
             $this->streamFile();
+
+            return;
+        }
+
+        if ($this->streamWriter !== null) {
+            // Streaming response (e.g. proxied MJPEG): the writer owns the
+            // output from here on and runs until the client disconnects.
+            ($this->streamWriter)();
+            if (function_exists('fastcgi_finish_request')) {
+                @fastcgi_finish_request();
+            }
 
             return;
         }

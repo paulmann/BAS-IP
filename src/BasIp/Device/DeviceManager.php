@@ -203,6 +203,8 @@ final class DeviceManager
         $this->drivers = [];
         $this->devices = [];
         $this->loaded = false;
+        // Камеры устройств участвуют в CSP (img-src) — сбрасываем и его кэш.
+        $this->cache?->forget('csp.camera_origins');
     }
 
     /** Create or update a device row. @param array<string, mixed> $input */
