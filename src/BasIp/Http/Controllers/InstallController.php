@@ -860,7 +860,16 @@ PHP;
 
     private function absolutePath(string $path): string
     {
-        return str_starts_with($path, '/') ? $path : $this->config()->root() . '/' . ltrim($path, '/');
+        // Absolute on POSIX (/srv/app), on a Windows drive (C:\app) and on a
+        // UNC share (\\server\share) — everything else is app-root relative.
+        $isAbsolute = str_starts_with($path, '/')
+            || str_starts_with($path, '\\')
+            || (strlen($path) > 2
+                && ctype_alpha($path[0])
+                && $path[1] === ':'
+                && ($path[2] === '/' || $path[2] === '\\'));
+
+        return $isAbsolute ? $path : $this->config()->root() . '/' . ltrim($path, '/');
     }
 
     private function suggestAdminLogin(): string

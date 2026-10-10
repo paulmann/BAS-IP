@@ -6,7 +6,7 @@
 [![DB](https://img.shields.io/badge/MySQL%20%7C%20MariaDB%20%7C%20PostgreSQL%20%7C%20SQLite-336791?logo=postgresql&logoColor=white)](wiki/03-Configuration.md)
 [![Tests](https://img.shields.io/badge/tests-200%20passed-brightgreen)](tests)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0%20Kronos-orange)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.0.1%20Kronos-orange)](CHANGELOG.md)
 [![No CDN](https://img.shields.io/badge/CDN-none%2C%20всё%20локально-success)](wiki/04-Architecture.md)
 
 > **v2 «Kronos»** — полный рефакторинг v1 (один файл `bas-ip.php` с токеном в репозитории)

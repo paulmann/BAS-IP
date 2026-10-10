@@ -120,7 +120,9 @@ window.__BASIP = {
             <?php
               // Badges are filled client-side from /admin/nav-counts so they stay
               // fresh without re-rendering the whole shell.
-              $badgeClass = ['debtors' => 'nav-badge nav-badge-warning'][$badgeKey] ?? 'nav-badge';
+              $badgeClass = $badgeKey === null                  // a null offset is deprecated in PHP 8.5
+                  ? 'nav-badge'
+                  : (['debtors' => 'nav-badge nav-badge-warning'][$badgeKey] ?? 'nav-badge');
             ?>
             <?php if ($badgeKey !== null): ?>
               <span class="<?= $this->e($badgeClass) ?>" data-count="<?= $this->e((string) $badgeKey) ?>"></span>

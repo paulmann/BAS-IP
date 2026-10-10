@@ -295,7 +295,9 @@ final class HttpClient
         $error  = curl_error($ch);
         $status     = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $headerSize = (int) curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        curl_close($ch);
+        // curl_close() is deprecated as of PHP 8.5 (a no-op since PHP 8.0):
+        // the handle is a CurlHandle object and is freed by the garbage collector.
+        unset($ch);
 
         if ($fileHandle !== null) {
             fclose($fileHandle);
