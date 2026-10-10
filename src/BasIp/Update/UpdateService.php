@@ -467,6 +467,9 @@ final class UpdateService
 
     private function makeZip(string $dir, string $target): void
     {
+        if (!class_exists(ZipArchive::class)) {
+            throw new RuntimeException('Расширение PHP `zip` не установлено — снимок версии создать невозможно.');
+        }
         $zip = new ZipArchive();
         if ($zip->open($target, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             throw new RuntimeException('Не удалось создать снимок: ' . $target);
@@ -485,6 +488,9 @@ final class UpdateService
 
     private function extract(string $archive, string $target): void
     {
+        if (!class_exists(ZipArchive::class)) {
+            throw new RuntimeException('Расширение PHP `zip` не установлено — распаковка обновления невозможна.');
+        }
         $zip = new ZipArchive();
         $result = $zip->open($archive);
         if ($result !== true) {

@@ -20,7 +20,7 @@ use Throwable;
  */
 final class App
 {
-    public const VERSION = '2.0.1';
+    public const VERSION = '2.0.2';
     public const CODENAME = 'Kronos';
 
     private static ?App $instance = null;

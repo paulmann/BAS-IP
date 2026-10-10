@@ -1,6 +1,6 @@
 {
   "name": "bas-ip-gate-manager-assets",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Front-end build for BAS-IP Gate Manager (Tailwind CSS + shadcn/ui design tokens, fully local — no CDN).",
   "license": "MIT",

@@ -42,7 +42,7 @@ return [
         'short_name'    => 'BAS-IP',
         'env'           => 'production',                 // production | staging | development
         'debug'         => false,                        // NEVER true in production
-        'version'       => '2.0.1',
+        'version'       => '2.0.2',
         'url'           => '',                           // e.g. https://gate.example.com (auto-detected when empty)
         'timezone'      => 'Europe/Moscow',
         'locale'        => 'ru',
