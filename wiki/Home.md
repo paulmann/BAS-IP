@@ -81,4 +81,4 @@ mobile-first, ни одного CDN).
 
 ## Лицензия
 
-MIT © Mikhail Deynekin — [LICENSE](../LICENSE).
+MIT © Mikhail Deynekin — [LICENSE](https://github.com/paulmann/BAS-IP/blob/main/LICENSE).

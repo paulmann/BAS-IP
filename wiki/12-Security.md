@@ -120,7 +120,7 @@ API 120/мин. `429` + `Retry-After`. Хранение — файл/кэш с G
 
 ## Сообщение об уязвимостях
 
-Только приватно — [SECURITY.md](../SECURITY.md). Публичные issue по
+Только приватно — [SECURITY.md](https://github.com/paulmann/BAS-IP/blob/main/SECURITY.md). Публичные issue по
 безопасности удаляются.
 
 ---

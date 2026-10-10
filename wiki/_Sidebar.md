@@ -29,4 +29,4 @@
 * [04 · Архитектура](04-Architecture.md)
 * [17 · Миграция с v1](17-Migration-from-v1.md)
 * [18 · FAQ](18-FAQ.md)
-* [CHANGELOG](../CHANGELOG.md) · [SECURITY](../SECURITY.md) · [CONTRIBUTING](../CONTRIBUTING.md)
+* [CHANGELOG](https://github.com/paulmann/BAS-IP/blob/main/CHANGELOG.md) · [SECURITY](https://github.com/paulmann/BAS-IP/blob/main/SECURITY.md) · [CONTRIBUTING](https://github.com/paulmann/BAS-IP/blob/main/CONTRIBUTING.md)

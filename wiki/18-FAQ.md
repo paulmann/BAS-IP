@@ -142,4 +142,4 @@ cron. 512 МБ ОЗУ достаточно.
 `php tools/smoke.php` (68 end-to-end проверок). Без PHPUnit — свой раннер.
 
 ---
-[← Home](Home.md) · [Решение проблем](16-Troubleshooting.md) · [SECURITY](../SECURITY.md)
+[← Home](Home.md) · [Решение проблем](16-Troubleshooting.md) · [SECURITY](https://github.com/paulmann/BAS-IP/blob/main/SECURITY.md)

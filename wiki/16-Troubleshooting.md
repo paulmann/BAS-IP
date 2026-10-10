@@ -97,7 +97,7 @@ php bin/bas-ip logs:tail audit --q=is_security   # инциденты безоп
    упало): перезапустить php-fpm; данные целы (БД отдельно), `doctor` после.
 
 Не нашли решения — [FAQ](18-FAQ.md), встроенная справка `/help` → «Решение
-проблем», или создайте issue (для безопасности — [SECURITY.md](../SECURITY.md)).
+проблем», или создайте issue (для безопасности — [SECURITY.md](https://github.com/paulmann/BAS-IP/blob/main/SECURITY.md)).
 
 ---
 Дальше: [17 · Миграция с v1](17-Migration-from-v1.md)
