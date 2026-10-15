@@ -3,7 +3,7 @@
   "version": "2.0.2",
   "private": true,
   "description": "Front-end build for BAS-IP Gate Manager (Tailwind CSS + shadcn/ui design tokens, fully local — no CDN).",
-  "license": "MIT",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "scripts": {
     "build": "npm run build:css && npm run build:js && npm run build:icons",
     "build:css": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --minify",
