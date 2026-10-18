@@ -5,7 +5,6 @@
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B%20%28рекомендуется%208.5%29-777bb3?logo=php&logoColor=white)](https://www.php.net/)
 [![DB](https://img.shields.io/badge/MySQL%20%7C%20MariaDB%20%7C%20PostgreSQL%20%7C%20SQLite-336791?logo=postgresql&logoColor=white)](wiki/03-Configuration.md)
 [![Tests](https://img.shields.io/badge/tests-200%20passed-brightgreen)](tests)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.2%20Kronos-orange)](CHANGELOG.md)
 [![No CDN](https://img.shields.io/badge/CDN-none%2C%20всё%20локально-success)](wiki/04-Architecture.md)
 
