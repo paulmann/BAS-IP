@@ -152,6 +152,6 @@ wiki/                 полная документация (GitHub Wiki)
 
 ## Лицензия
 
-MIT © Mikhail Deynekin — см. [LICENSE](LICENSE).
+PolyForm Noncommercial 1.0.0 © Mikhail Deynekin — см. [LICENSE](LICENSE).
 Иконки — [Lucide](https://lucide.dev) (ISC), шрифты — Inter и JetBrains Mono (OFL 1.1),
 QR — qrcode-generator (MIT). Все зависимости вендорятся локально.
